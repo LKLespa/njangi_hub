@@ -9,62 +9,65 @@ class IntroScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(15),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Expanded(
-              child: Stack(
-            children: [
-              AvatarDisplay(
-                xLabelAlignment: 0.70,
-                yLabelAlignment: 0.75,
-                rightPos: -100,
-                topPos: 0,
-                avatarRadius: 75,
-                image: Assets.imagesBlackGroup,
-              ),
-              AvatarDisplay(
-                  xLabelAlignment: -0.75,
-                  yLabelAlignment: 0.25,
+    return Material(
+      child: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Expanded(
+                child: Stack(
+              children: [
+                AvatarDisplay(
+                  xLabelAlignment: 0.70,
+                  yLabelAlignment: 0.75,
                   rightPos: -100,
                   topPos: 0,
-                  avatarRadius: 50,
-                  image: Assets.imagesBlackGroup2),
-              AvatarDisplay(
-                  xLabelAlignment: 0.95,
-                  yLabelAlignment: -0.25,
-                  rightPos: 25,
-                  topPos: -75,
-                  avatarRadius: 40,
-                  image: Assets.imagesBlackMan),
-            ],
-          )),
-          const Gap(20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Welcome to NjangiHub',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: primaryColor)),
-              Text('Empower learning\nFoster collaboration\nShape futures',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(fontWeight: FontWeight.w700)),
-              const Gap(10),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: ElevatedButton(
-                    onPressed: () => {}, child: const Text('Get Started')),
-              ),
-              const Gap(30)
-            ],
-          )
-        ],
+                  avatarRadius: 75,
+                  image: Assets.imagesBlackGroup,
+                ),
+                AvatarDisplay(
+                    xLabelAlignment: -0.75,
+                    yLabelAlignment: 0.25,
+                    rightPos: -100,
+                    topPos: 0,
+                    avatarRadius: 50,
+                    image: Assets.imagesBlackGroup2),
+                AvatarDisplay(
+                    xLabelAlignment: 0.95,
+                    yLabelAlignment: -0.25,
+                    rightPos: 25,
+                    topPos: -75,
+                    avatarRadius: 40,
+                    image: Assets.imagesBlackMan),
+              ],
+            )),
+            const Gap(20),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Welcome to NjangiHub',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(color: primaryColor)),
+                Text('Empower learning\nFoster collaboration\nShape futures',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineMedium
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                const Gap(10),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                      onPressed: () => Navigator.of(context).pushNamed('/home')
+                      , child: const Text('Get Started')),
+                ),
+                const Gap(30)
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
