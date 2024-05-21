@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:njangi_hub/generated/assets.dart';
+import 'package:njangi_hub/shared/shared.dart';
 
 class LauncherScreen extends StatefulWidget {
   const LauncherScreen({super.key});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -59,8 +60,8 @@ class IntroScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pushNamed('/home')
-                      , child: const Text('Get Started')),
+                      onPressed: () => Navigator.of(context).pushNamed('/home'),
+                      child: const Text('Get Started')),
                 ),
                 const Gap(30)
               ],
@@ -150,3 +151,15 @@ class AvatarDisplay extends StatelessWidget {
     );
   }
 }
+
+// User user = User(
+//     uid: '',
+//     token: '',
+//     firstName: "Mbah",
+//     lastName: "Lesky",
+//     email: "mbahlesky2@gmail.com",
+//     phone: "237679682626",
+//     password: "*******",
+//     isOnline: false,
+//     lastSeen: null,
+//     createdAt: DateTime.now());

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "35923112741",
+    "project_id": "njangi-hub",
+    "storage_bucket": "njangi-hub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35923112741:android:e0169d9064c3bf5746e0cc",
+        "android_client_info": {
+          "package_name": "com.lespa.njangihub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6ZiZv-OWftSvh-0SntnSdEVSDe2PIBSE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

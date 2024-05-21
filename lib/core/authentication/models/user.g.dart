@@ -9,12 +9,12 @@ part of 'user.dart';
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       uid: json['uid'] as String,
       token: json['token'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
+      name: json['name'] as String,
+      userName: json['userName'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
-      password: json['password'] as String,
       aboutMe: json['aboutMe'] as String? ?? '',
+      photo: json['photo'] as String? ?? '',
       isOnline: json['isOnline'] as bool,
       lastSeen: json['lastSeen'] == null
           ? null
@@ -34,12 +34,12 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'token': instance.token,
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
+      'name': instance.name,
+      'userName': instance.userName,
       'email': instance.email,
       'phone': instance.phone,
-      'password': instance.password,
       'aboutMe': instance.aboutMe,
+      'photo': instance.photo,
       'isOnline': instance.isOnline,
       'lastSeen': instance.lastSeen?.toIso8601String(),
       'createdAt': instance.createdAt.toIso8601String(),

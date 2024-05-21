@@ -22,12 +22,12 @@ User _$UserFromJson(Map<String, dynamic> json) {
 mixin _$User {
   String get uid => throw _privateConstructorUsedError;
   String get token => throw _privateConstructorUsedError;
-  String get firstName => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
+  String get userName => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get phone => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
   String get aboutMe => throw _privateConstructorUsedError;
+  String get photo => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
   DateTime? get lastSeen => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -47,12 +47,12 @@ abstract class $UserCopyWith<$Res> {
   $Res call(
       {String uid,
       String token,
-      String firstName,
-      String lastName,
+      String name,
+      String userName,
       String email,
       String phone,
-      String password,
       String aboutMe,
+      String photo,
       bool isOnline,
       DateTime? lastSeen,
       DateTime createdAt,
@@ -75,12 +75,12 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? uid = null,
     Object? token = null,
-    Object? firstName = null,
-    Object? lastName = null,
+    Object? name = null,
+    Object? userName = null,
     Object? email = null,
     Object? phone = null,
-    Object? password = null,
     Object? aboutMe = null,
+    Object? photo = null,
     Object? isOnline = null,
     Object? lastSeen = freezed,
     Object? createdAt = null,
@@ -96,13 +96,13 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -112,13 +112,13 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
       aboutMe: null == aboutMe
           ? _value.aboutMe
           : aboutMe // ignore: cast_nullable_to_non_nullable
+              as String,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
               as String,
       isOnline: null == isOnline
           ? _value.isOnline
@@ -154,12 +154,12 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   $Res call(
       {String uid,
       String token,
-      String firstName,
-      String lastName,
+      String name,
+      String userName,
       String email,
       String phone,
-      String password,
       String aboutMe,
+      String photo,
       bool isOnline,
       DateTime? lastSeen,
       DateTime createdAt,
@@ -179,12 +179,12 @@ class __$$UserImplCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? token = null,
-    Object? firstName = null,
-    Object? lastName = null,
+    Object? name = null,
+    Object? userName = null,
     Object? email = null,
     Object? phone = null,
-    Object? password = null,
     Object? aboutMe = null,
+    Object? photo = null,
     Object? isOnline = null,
     Object? lastSeen = freezed,
     Object? createdAt = null,
@@ -200,13 +200,13 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as String,
-      firstName: null == firstName
-          ? _value.firstName
-          : firstName // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
-      lastName: null == lastName
-          ? _value.lastName
-          : lastName // ignore: cast_nullable_to_non_nullable
+      userName: null == userName
+          ? _value.userName
+          : userName // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -216,13 +216,13 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
       aboutMe: null == aboutMe
           ? _value.aboutMe
           : aboutMe // ignore: cast_nullable_to_non_nullable
+              as String,
+      photo: null == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
               as String,
       isOnline: null == isOnline
           ? _value.isOnline
@@ -254,12 +254,12 @@ class _$UserImpl extends _User {
   _$UserImpl(
       {required this.uid,
       required this.token,
-      required this.firstName,
-      required this.lastName,
+      required this.name,
+      required this.userName,
       required this.email,
       required this.phone,
-      required this.password,
       this.aboutMe = '',
+      this.photo = '',
       required this.isOnline,
       required this.lastSeen,
       required this.createdAt,
@@ -277,18 +277,19 @@ class _$UserImpl extends _User {
   @override
   final String token;
   @override
-  final String firstName;
+  final String name;
   @override
-  final String lastName;
+  final String userName;
   @override
   final String email;
   @override
   final String phone;
   @override
-  final String password;
-  @override
   @JsonKey()
   final String aboutMe;
+  @override
+  @JsonKey()
+  final String photo;
   @override
   final bool isOnline;
   @override
@@ -316,7 +317,7 @@ class _$UserImpl extends _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, token: $token, firstName: $firstName, lastName: $lastName, email: $email, phone: $phone, password: $password, aboutMe: $aboutMe, isOnline: $isOnline, lastSeen: $lastSeen, createdAt: $createdAt, groupsGIDs: $groupsGIDs, privateChatsCIDs: $privateChatsCIDs)';
+    return 'User(uid: $uid, token: $token, name: $name, userName: $userName, email: $email, phone: $phone, aboutMe: $aboutMe, photo: $photo, isOnline: $isOnline, lastSeen: $lastSeen, createdAt: $createdAt, groupsGIDs: $groupsGIDs, privateChatsCIDs: $privateChatsCIDs)';
   }
 
   @override
@@ -326,15 +327,13 @@ class _$UserImpl extends _User {
             other is _$UserImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.token, token) || other.token == token) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.userName, userName) ||
+                other.userName == userName) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
             (identical(other.aboutMe, aboutMe) || other.aboutMe == aboutMe) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.isOnline, isOnline) ||
                 other.isOnline == isOnline) &&
             (identical(other.lastSeen, lastSeen) ||
@@ -353,12 +352,12 @@ class _$UserImpl extends _User {
       runtimeType,
       uid,
       token,
-      firstName,
-      lastName,
+      name,
+      userName,
       email,
       phone,
-      password,
       aboutMe,
+      photo,
       isOnline,
       lastSeen,
       createdAt,
@@ -383,12 +382,12 @@ abstract class _User extends User {
   factory _User(
       {required final String uid,
       required final String token,
-      required final String firstName,
-      required final String lastName,
+      required final String name,
+      required final String userName,
       required final String email,
       required final String phone,
-      required final String password,
       final String aboutMe,
+      final String photo,
       required final bool isOnline,
       required final DateTime? lastSeen,
       required final DateTime createdAt,
@@ -403,17 +402,17 @@ abstract class _User extends User {
   @override
   String get token;
   @override
-  String get firstName;
+  String get name;
   @override
-  String get lastName;
+  String get userName;
   @override
   String get email;
   @override
   String get phone;
   @override
-  String get password;
-  @override
   String get aboutMe;
+  @override
+  String get photo;
   @override
   bool get isOnline;
   @override

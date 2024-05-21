@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:njangi_hub/generated/assets.dart';
 
 class MyHomePage extends HookWidget {
 
