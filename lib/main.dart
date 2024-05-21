@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         theme: theme,
         darkTheme: darkTheme,
         themeMode: savedThemeMode!.isDark ? ThemeMode.dark : savedThemeMode!.isLight ? ThemeMode.light : ThemeMode.system,
-        initialRoute: '/splash',
+        initialRoute: '/register',
         routes: _routes,
       ),
     );
@@ -34,9 +34,10 @@ class MyApp extends StatelessWidget {
 
 final _routes = {
   '/splash': (context) => const LauncherScreen(),
-  '/home': (context) => const SettingsPage(),
+  '/home': (context) => MyHomePage(),
   '/intro': (context) => const IntroScreen(),
   '/login': (context) => LoginPage(),
+  '/register': (context) => RegisterPage(),
 };
 
 final _routes2 = {
