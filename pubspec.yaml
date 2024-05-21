@@ -57,7 +57,6 @@ dependencies:
   loading_animation_widget: ^1.2.1
   flutter_launcher_icons: ^0.13.1
   connectivity_plus: ^6.0.3
-  json_serializable: ^6.8.0
   freezed: ^2.5.2
   flutter_hooks: ^0.20.5
   skeletonizer: ^1.1.2+1
@@ -77,7 +76,7 @@ dev_dependencies:
   build_runner: ^2.4.9
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
-  json_serializable:
+  json_serializable: ^6.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

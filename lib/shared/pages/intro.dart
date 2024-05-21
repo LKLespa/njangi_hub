@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:njangi_hub/generated/assets.dart';
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 

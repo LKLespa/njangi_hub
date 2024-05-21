@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:njangi_hub/generated/assets.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
 class AppBackground extends StatelessWidget {
