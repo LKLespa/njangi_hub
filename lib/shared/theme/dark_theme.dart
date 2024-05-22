@@ -6,6 +6,7 @@ ThemeData darkTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
     primary: primaryColor,
     secondary: secondaryColor,
+    error: Colors.red
   ),
   useMaterial3: true,
 );

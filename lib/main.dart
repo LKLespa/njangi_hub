@@ -39,25 +39,20 @@ class MyApp extends StatelessWidget {
             : savedThemeMode!.isLight
                 ? ThemeMode.light
                 : ThemeMode.system,
-        initialRoute: '/register',
+        initialRoute: '/splash',
         routes: _routes,
       ),
     );
   }
 }
-
+//695747281
 final _routes = {
   '/splash': (context) => const LauncherScreen(),
   '/home': (context) => const MyHomePage(),
   '/intro': (context) => const IntroScreen(),
   '/login': (context) => LoginPage(),
   '/register': (context) => RegisterPage(),
-};
-
-final _routes2 = {
-  '/splash': (context) => const AppBackground(child: LauncherScreen()),
-  '/home': (context) => const AppBackground(child: Text('Home')),
-  '/login': (context) => AppBackground(child: LoginPage()),
+  '/otp': (context) => OtpPage(),
 };
 
 // Platform  Firebase App Id

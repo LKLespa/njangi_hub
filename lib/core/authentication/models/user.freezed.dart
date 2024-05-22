@@ -21,16 +21,16 @@ User _$UserFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$User {
   String get uid => throw _privateConstructorUsedError;
-  String get token => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get userName => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String get phone => throw _privateConstructorUsedError;
+  String? get token => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  String? get userName => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
+  String? get phone => throw _privateConstructorUsedError;
   String get aboutMe => throw _privateConstructorUsedError;
-  String get photo => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
   DateTime? get lastSeen => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
   List<String> get groupsGIDs => throw _privateConstructorUsedError;
   List<String> get privateChatsCIDs => throw _privateConstructorUsedError;
 
@@ -46,16 +46,16 @@ abstract class $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
-      String token,
-      String name,
-      String userName,
-      String email,
-      String phone,
+      String? token,
+      String? name,
+      String? userName,
+      String? email,
+      String? phone,
       String aboutMe,
-      String photo,
+      String? photo,
       bool isOnline,
       DateTime? lastSeen,
-      DateTime createdAt,
+      DateTime? createdAt,
       List<String> groupsGIDs,
       List<String> privateChatsCIDs});
 }
@@ -74,16 +74,16 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   @override
   $Res call({
     Object? uid = null,
-    Object? token = null,
-    Object? name = null,
-    Object? userName = null,
-    Object? email = null,
-    Object? phone = null,
+    Object? token = freezed,
+    Object? name = freezed,
+    Object? userName = freezed,
+    Object? email = freezed,
+    Object? phone = freezed,
     Object? aboutMe = null,
-    Object? photo = null,
+    Object? photo = freezed,
     Object? isOnline = null,
     Object? lastSeen = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? groupsGIDs = null,
     Object? privateChatsCIDs = null,
   }) {
@@ -92,34 +92,34 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      token: null == token
+      token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      userName: null == userName
+              as String?,
+      userName: freezed == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
+              as String?,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
+              as String?,
+      phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       aboutMe: null == aboutMe
           ? _value.aboutMe
           : aboutMe // ignore: cast_nullable_to_non_nullable
               as String,
-      photo: null == photo
+      photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isOnline: null == isOnline
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
@@ -128,10 +128,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.lastSeen
           : lastSeen // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       groupsGIDs: null == groupsGIDs
           ? _value.groupsGIDs
           : groupsGIDs // ignore: cast_nullable_to_non_nullable
@@ -153,16 +153,16 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @useResult
   $Res call(
       {String uid,
-      String token,
-      String name,
-      String userName,
-      String email,
-      String phone,
+      String? token,
+      String? name,
+      String? userName,
+      String? email,
+      String? phone,
       String aboutMe,
-      String photo,
+      String? photo,
       bool isOnline,
       DateTime? lastSeen,
-      DateTime createdAt,
+      DateTime? createdAt,
       List<String> groupsGIDs,
       List<String> privateChatsCIDs});
 }
@@ -178,16 +178,16 @@ class __$$UserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? token = null,
-    Object? name = null,
-    Object? userName = null,
-    Object? email = null,
-    Object? phone = null,
+    Object? token = freezed,
+    Object? name = freezed,
+    Object? userName = freezed,
+    Object? email = freezed,
+    Object? phone = freezed,
     Object? aboutMe = null,
-    Object? photo = null,
+    Object? photo = freezed,
     Object? isOnline = null,
     Object? lastSeen = freezed,
-    Object? createdAt = null,
+    Object? createdAt = freezed,
     Object? groupsGIDs = null,
     Object? privateChatsCIDs = null,
   }) {
@@ -196,34 +196,34 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      token: null == token
+      token: freezed == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as String?,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      userName: null == userName
+              as String?,
+      userName: freezed == userName
           ? _value.userName
           : userName // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
+              as String?,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      phone: null == phone
+              as String?,
+      phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       aboutMe: null == aboutMe
           ? _value.aboutMe
           : aboutMe // ignore: cast_nullable_to_non_nullable
               as String,
-      photo: null == photo
+      photo: freezed == photo
           ? _value.photo
           : photo // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isOnline: null == isOnline
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
@@ -232,10 +232,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.lastSeen
           : lastSeen // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      createdAt: null == createdAt
+      createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as DateTime?,
       groupsGIDs: null == groupsGIDs
           ? _value._groupsGIDs
           : groupsGIDs // ignore: cast_nullable_to_non_nullable
@@ -253,16 +253,16 @@ class __$$UserImplCopyWithImpl<$Res>
 class _$UserImpl extends _User {
   _$UserImpl(
       {required this.uid,
-      required this.token,
-      required this.name,
-      required this.userName,
-      required this.email,
-      required this.phone,
+      this.token,
+      this.name,
+      this.userName,
+      this.email,
+      this.phone,
       this.aboutMe = '',
-      this.photo = '',
-      required this.isOnline,
-      required this.lastSeen,
-      required this.createdAt,
+      this.photo,
+      this.isOnline = false,
+      this.lastSeen,
+      this.createdAt,
       final List<String> groupsGIDs = const [],
       final List<String> privateChatsCIDs = const []})
       : _groupsGIDs = groupsGIDs,
@@ -275,27 +275,27 @@ class _$UserImpl extends _User {
   @override
   final String uid;
   @override
-  final String token;
+  final String? token;
   @override
-  final String name;
+  final String? name;
   @override
-  final String userName;
+  final String? userName;
   @override
-  final String email;
+  final String? email;
   @override
-  final String phone;
+  final String? phone;
   @override
   @JsonKey()
   final String aboutMe;
   @override
-  @JsonKey()
-  final String photo;
+  final String? photo;
   @override
+  @JsonKey()
   final bool isOnline;
   @override
   final DateTime? lastSeen;
   @override
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final List<String> _groupsGIDs;
   @override
   @JsonKey()
@@ -381,16 +381,16 @@ class _$UserImpl extends _User {
 abstract class _User extends User {
   factory _User(
       {required final String uid,
-      required final String token,
-      required final String name,
-      required final String userName,
-      required final String email,
-      required final String phone,
+      final String? token,
+      final String? name,
+      final String? userName,
+      final String? email,
+      final String? phone,
       final String aboutMe,
-      final String photo,
-      required final bool isOnline,
-      required final DateTime? lastSeen,
-      required final DateTime createdAt,
+      final String? photo,
+      final bool isOnline,
+      final DateTime? lastSeen,
+      final DateTime? createdAt,
       final List<String> groupsGIDs,
       final List<String> privateChatsCIDs}) = _$UserImpl;
   _User._() : super._();
@@ -400,25 +400,25 @@ abstract class _User extends User {
   @override
   String get uid;
   @override
-  String get token;
+  String? get token;
   @override
-  String get name;
+  String? get name;
   @override
-  String get userName;
+  String? get userName;
   @override
-  String get email;
+  String? get email;
   @override
-  String get phone;
+  String? get phone;
   @override
   String get aboutMe;
   @override
-  String get photo;
+  String? get photo;
   @override
   bool get isOnline;
   @override
   DateTime? get lastSeen;
   @override
-  DateTime get createdAt;
+  DateTime? get createdAt;
   @override
   List<String> get groupsGIDs;
   @override

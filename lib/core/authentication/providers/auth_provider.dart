@@ -3,8 +3,6 @@ import 'package:njangi_hub/core/authentication/authentication.dart' as auth;
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:toastification/toastification.dart';
 
 part 'auth_provider.g.dart';
@@ -12,15 +10,46 @@ part 'auth_provider.g.dart';
 @riverpod
 class AuthNotifier extends _$AuthNotifier {
   @override
-  auth.AuthState build() => const auth.AuthState.unauthenticated();
+  auth.AuthState build() => const auth.AuthState();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storgae = FirebaseStorage.instance;
+  late String verificationId;
+
+      Future<void> verifyPhoneAndSignIn({required BuildContext context, required String smsCode}) async {
+    state = state.copyWith(isAuthenticating: true, isLoading: true);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+    await _auth.signInWithCredential(credential).then((value) async {
+      print("User: ${value.user}");
+      final firebaseUser = value.user;
+      if(firebaseUser != null)
+     {
+       final user = auth.User(
+         token: credential.token != null ? credential.token!.toString() : "",
+         name: firebaseUser.displayName,
+         userName: "",
+         uid: firebaseUser.uid,
+         email: firebaseUser.email,
+         photo: firebaseUser.photoURL,
+         phone: firebaseUser.phoneNumber,
+         lastSeen: DateTime.now(),
+         createdAt: DateTime.now(),
+         isOnline: true,
+         aboutMe: "",
+       );
+       state = state.copyWith(
+           isLoading: false, isAuthenticating: false, user: user);
+       print('State $user');
+     }
+      Navigator.of(context).pushReplacementNamed('/home');
+    }).catchError((error) {
+      state = state.copyWith(isLoading: false, error: error.toString());
+      toast(context: context, message: "An Error Occurred", type: ToastificationType.error);
+    });
+  }
 
   Future<void> signInWithPhoneNumber(
       {required String phoneNumber, required BuildContext context}) async {
-    state = const auth.AuthState.authenticating();
+    state = state.copyWith(isAuthenticating: true, isLoading: true, error: null);
     print("Phone number: $phoneNumber");
     await _auth
         .verifyPhoneNumber(
@@ -30,11 +59,11 @@ class AuthNotifier extends _$AuthNotifier {
               await _auth.signInWithCredential(credential).then((value) async {
                 final user = auth.User(
                   token: value.credential!.token!.toString(),
-                  name: value.user!.displayName ?? "",
-                  userName: value.additionalUserInfo!.username ?? "",
+                  name: value.user!.displayName,
+                  userName: value.additionalUserInfo!.username,
                   uid: value.user!.uid,
-                  email: value.user!.email ?? "",
-                  photo: value.user!.photoURL ?? "",
+                  email: value.user!.email,
+                  photo: value.user!.photoURL,
                   phone: phoneNumber,
                   lastSeen: DateTime.now(),
                   createdAt: DateTime.now(),
@@ -42,16 +71,18 @@ class AuthNotifier extends _$AuthNotifier {
                   aboutMe: value.additionalUserInfo!.profile?['aboutMe'],
                 );
 
-                state = auth.AuthState.authenticated(user);
+                state = state.copyWith(
+                    isLoading: false, isAuthenticating: false, user: user);
                 toast(
                     context: context,
                     message: 'Welcome to NjangiHub',
                     type: ToastificationType.success);
                 print("Welcome to NjangiHub ${state.toString()}");
+                Navigator.of(context).pushReplacementNamed('/home');
               });
             },
             verificationFailed: (e) {
-              state = auth.AuthState.error(e.message!);
+              state = state.copyWith(isLoading: false, error: e.message);
               toast(
                   context: context,
                   title: "Authentication Error",
@@ -59,23 +90,26 @@ class AuthNotifier extends _$AuthNotifier {
                   type: ToastificationType.error);
               print("Authentication Error: ${e.message}");
             },
-            codeSent: (codeString, codeInt) {
+            codeSent: (verifyId, resendToken) {
+              verificationId = verifyId;
               toast(
                   context: context,
-                  message: codeString,
+                  message: "A 6-digit verification code was sent to $phoneNumber",
                   type: ToastificationType.info);
-              state = const auth.AuthState.authenticateProgressive(1);
-              print('Code sent to $codeString and $codeInt');
+              state = state.copyWith(
+                  isLoading: false,
+                  error: null,
+                  tempUser: auth.User(
+                      uid: '',
+                      phone: phoneNumber,
+                      isOnline: true,
+                      aboutMe: ''));
+              Navigator.of(context).pushNamed('/otp');
             },
             codeAutoRetrievalTimeout: (value) {
-              state = const auth.AuthState.error("Code auto retrieval timeout");
-              toast(
-                  context: context,
-                  message: "Code auto retrieval timeout",
-                  type: ToastificationType.error);
             })
         .catchError((error, stackTrace) {
-      state = auth.AuthState.error(error.toString());
+      state = state.copyWith(isLoading: false, error: error.toString().substring(0, 20));
       toast(
           context: context,
           message: error.toString(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
@@ -59,8 +58,8 @@ class IntroScreen extends StatelessWidget {
                 const Gap(10),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).pushNamed('/home'),
+                  child: FilledButton(
+                      onPressed: () => Navigator.of(context).pushNamed('/login'),
                       child: const Text('Get Started')),
                 ),
                 const Gap(30)

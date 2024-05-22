@@ -5,6 +5,7 @@ ThemeData lightTheme = ThemeData(
   colorScheme: const ColorScheme.light(
     primary: primaryColor,
     secondary: secondaryColor,
+    error: Colors.red,
   ),
   useMaterial3: true,
 );

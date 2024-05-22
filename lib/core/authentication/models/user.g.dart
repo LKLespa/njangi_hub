@@ -8,18 +8,20 @@ part of 'user.dart';
 
 _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       uid: json['uid'] as String,
-      token: json['token'] as String,
-      name: json['name'] as String,
-      userName: json['userName'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String,
+      token: json['token'] as String?,
+      name: json['name'] as String?,
+      userName: json['userName'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
       aboutMe: json['aboutMe'] as String? ?? '',
-      photo: json['photo'] as String? ?? '',
-      isOnline: json['isOnline'] as bool,
+      photo: json['photo'] as String?,
+      isOnline: json['isOnline'] as bool? ?? false,
       lastSeen: json['lastSeen'] == null
           ? null
           : DateTime.parse(json['lastSeen'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
       groupsGIDs: (json['groupsGIDs'] as List<dynamic>?)
               ?.map((e) => e as String)
               .toList() ??
@@ -42,7 +44,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'photo': instance.photo,
       'isOnline': instance.isOnline,
       'lastSeen': instance.lastSeen?.toIso8601String(),
-      'createdAt': instance.createdAt.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
       'groupsGIDs': instance.groupsGIDs,
       'privateChatsCIDs': instance.privateChatsCIDs,
     };

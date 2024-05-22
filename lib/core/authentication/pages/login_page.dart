@@ -26,26 +26,27 @@ class LoginPage extends HookWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Gap(55),
-                  // Hero(
-                  //     tag: 'logo',
-                  //     child: Image.asset(Assets.imagesLogoVertical)),
-                  // const Gap(5),
-                  Text('Log In',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.copyWith(fontWeight: FontWeight.w700)),
-                  const Gap(5),
-                  Text('Enter your login details below',
-                      style: Theme.of(context).textTheme.titleMedium),
-                  const Gap(10),
                   Form(
                     key: formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        const Gap(55),
+                        // Hero(
+                        //     tag: 'logo',
+                        //     child: Image.asset(Assets.imagesLogoVertical)),
+                        // const Gap(5),
+                        Text('Log In',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(fontWeight: FontWeight.w700)),
+                        const Gap(5),
+                        Text('Enter your login details below',
+                            style: Theme.of(context).textTheme.titleMedium),
+                        const Gap(10),
                         TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
@@ -54,7 +55,7 @@ class LoginPage extends HookWidget {
                             if (value!.trim().isEmpty) {
                               return 'Please enter your email address';
                             }
-                            if (!RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$')
+                            if (!RegExp(r'^[\w-.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$')
                                 .hasMatch(value.trim())) {
                               return 'Please enter a valid email address';
                             }
@@ -111,21 +112,26 @@ class LoginPage extends HookWidget {
                       ],
                     ),
                   ),
-                  const Gap(20),
-                  const Divider(
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.grey,
-                  ),
-                  Center(
-                      child: TextButton(
-                          onPressed: () {},
-                          child: Text("I don't have an account",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(color: primaryColor)))),
+                  Column(
+                    children: [
+                      const Divider(
+                        thickness: 1,
+                        indent: 20,
+                        endIndent: 20,
+                        color: Colors.grey,
+                      ),
+                      Center(
+                          child: TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed('/register');
+                              },
+                              child: Text("I don't have an account",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(color: primaryColor)))),
+                    ],
+                  )
                 ],
               ),
             ),
