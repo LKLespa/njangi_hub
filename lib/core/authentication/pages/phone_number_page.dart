@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
-class RegisterPage extends HookConsumerWidget {
-  RegisterPage({super.key});
+class LoginWithPhoneNumberPage extends HookConsumerWidget {
+  LoginWithPhoneNumberPage({super.key});
 
   final formKey = GlobalKey<FormState>();
 
@@ -28,9 +28,9 @@ class RegisterPage extends HookConsumerWidget {
       e164Key: '',
     ));
 
-    return Material(
-      // color: Colors.transparent,
-      child: Padding(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(
           child: Container(
@@ -46,17 +46,12 @@ class RegisterPage extends HookConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Gap(50),
-                      // Hero(
-                      //     tag: 'logo',
-                      //     child: Image.asset(Assets.imagesLogoVertical)),
-                      // const Gap(5),
-                      Text('Sign Up',
+                      Text('Sign In',
                           style: Theme.of(context)
                               .textTheme
-                              .headlineLarge
+                              .headlineSmall
                               ?.copyWith(fontWeight: FontWeight.w700)),
-                      const Gap(5),
+                      const Gap(15),
                       Text('Enter your phone number below',
                           style: Theme.of(context).textTheme.titleMedium),
                       const Gap(10),

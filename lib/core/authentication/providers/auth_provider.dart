@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart' as auth;
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -13,43 +15,53 @@ class AuthNotifier extends _$AuthNotifier {
   auth.AuthState build() => const auth.AuthState();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   late String verificationId;
 
-      Future<void> verifyPhoneAndSignIn({required BuildContext context, required String smsCode}) async {
-    state = state.copyWith(isAuthenticating: true, isLoading: true);
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+  Future<void> _checkFirebaseUserAndContinue(
+      {required BuildContext context,
+      required PhoneAuthCredential phoneCredential,
+      required UserCredential userCredential}) async {
+    final firebaseUser = userCredential.user;
+    if (firebaseUser != null) {
+      final userExists =
+          await checkIfUserExistsAndGetUserFromFirestore(firebaseUser);
+      if (context.mounted) {
+        if (userExists) {
+          print("User already exists ${state.user}");
+          Navigator.of(context).pushReplacementNamed(PageRoutes.home);
+        } else {
+          print("User doesn't exists ${state.tempUser}");
+          Navigator.of(context)
+              .pushReplacementNamed(PageRoutes.userInformation);
+        }
+      }
+    }
+  }
+
+  Future<void> verifyPhoneAndSignIn(
+      {required BuildContext context, required String smsCode}) async {
+    state = state.copyWith(isLoading: true);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationId, smsCode: smsCode);
+
     await _auth.signInWithCredential(credential).then((value) async {
-      print("User: ${value.user}");
-      final firebaseUser = value.user;
-      if(firebaseUser != null)
-     {
-       final user = auth.User(
-         token: credential.token != null ? credential.token!.toString() : "",
-         name: firebaseUser.displayName,
-         userName: "",
-         uid: firebaseUser.uid,
-         email: firebaseUser.email,
-         photo: firebaseUser.photoURL,
-         phone: firebaseUser.phoneNumber,
-         lastSeen: DateTime.now(),
-         createdAt: DateTime.now(),
-         isOnline: true,
-         aboutMe: "",
-       );
-       state = state.copyWith(
-           isLoading: false, isAuthenticating: false, user: user);
-       print('State $user');
-     }
-      Navigator.of(context).pushReplacementNamed('/home');
+      print("User in sign in: ${value.user}");
+      _checkFirebaseUserAndContinue(
+          context: context, phoneCredential: credential, userCredential: value);
     }).catchError((error) {
       state = state.copyWith(isLoading: false, error: error.toString());
-      toast(context: context, message: "An Error Occurred", type: ToastificationType.error);
+      toast(
+          context: context,
+          message: "An Error Occurred",
+          type: ToastificationType.error);
     });
   }
 
   Future<void> signInWithPhoneNumber(
       {required String phoneNumber, required BuildContext context}) async {
-    state = state.copyWith(isAuthenticating: true, isLoading: true, error: null);
+    state =
+        state.copyWith(isAuthenticating: true, isLoading: true, error: null);
     print("Phone number: $phoneNumber");
     await _auth
         .verifyPhoneNumber(
@@ -57,28 +69,11 @@ class AuthNotifier extends _$AuthNotifier {
             timeout: const Duration(seconds: 60),
             verificationCompleted: (PhoneAuthCredential credential) async {
               await _auth.signInWithCredential(credential).then((value) async {
-                final user = auth.User(
-                  token: value.credential!.token!.toString(),
-                  name: value.user!.displayName,
-                  userName: value.additionalUserInfo!.username,
-                  uid: value.user!.uid,
-                  email: value.user!.email,
-                  photo: value.user!.photoURL,
-                  phone: phoneNumber,
-                  lastSeen: DateTime.now(),
-                  createdAt: DateTime.now(),
-                  isOnline: true,
-                  aboutMe: value.additionalUserInfo!.profile?['aboutMe'],
-                );
-
-                state = state.copyWith(
-                    isLoading: false, isAuthenticating: false, user: user);
-                toast(
+                print("User in verification: ${value.user}");
+                _checkFirebaseUserAndContinue(
                     context: context,
-                    message: 'Welcome to NjangiHub',
-                    type: ToastificationType.success);
-                print("Welcome to NjangiHub ${state.toString()}");
-                Navigator.of(context).pushReplacementNamed('/home');
+                    phoneCredential: credential,
+                    userCredential: value);
               });
             },
             verificationFailed: (e) {
@@ -94,7 +89,8 @@ class AuthNotifier extends _$AuthNotifier {
               verificationId = verifyId;
               toast(
                   context: context,
-                  message: "A 6-digit verification code was sent to $phoneNumber",
+                  message:
+                      "A 6-digit verification code was sent to $phoneNumber",
                   type: ToastificationType.info);
               state = state.copyWith(
                   isLoading: false,
@@ -104,17 +100,63 @@ class AuthNotifier extends _$AuthNotifier {
                       phone: phoneNumber,
                       isOnline: true,
                       aboutMe: ''));
-              Navigator.of(context).pushNamed('/otp');
+              Navigator.of(context).pushNamed(PageRoutes.otpVerify);
             },
-            codeAutoRetrievalTimeout: (value) {
-            })
+            codeAutoRetrievalTimeout: (value) {})
         .catchError((error, stackTrace) {
-      state = state.copyWith(isLoading: false, error: error.toString().substring(0, 20));
+      state = state.copyWith(
+          isLoading: false, error: error.toString().substring(0, 20));
       toast(
           context: context,
           message: error.toString(),
           type: ToastificationType.error);
       print("Catch Error$error");
     });
+  }
+
+  Future<bool> checkIfUserExistsAndGetUserFromFirestore(User user) async {
+    const source = Source.cache;
+    state = state.copyWith(isLoading: true);
+    DocumentSnapshot documentSnapshot = await _db
+        .collection("users")
+        .doc(user.uid)
+        .get(const GetOptions(source: source))
+        .whenComplete(() => state = state.copyWith(isLoading: false));
+    if (documentSnapshot.exists) {
+      state = state.copyWith(
+          isLoading: false,
+          isAuthenticating: false,
+          user: auth.User.fromJson(
+              documentSnapshot.data() as Map<String, dynamic>));
+      // TODO: Save data to hive local storage
+    } else {
+      state = state.copyWith(
+          isLoading: false,
+          user: null,
+          tempUser: auth.User(
+              uid: user.uid,
+              phone: user.phoneNumber,
+              token: user.refreshToken));
+    }
+    return documentSnapshot.exists;
+  }
+
+  Future<bool?> checkIfUsernameExist(
+      {required String username, required BuildContext context}) async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final querySnapshot = await _db
+          .collection("users")
+          .where("username", isEqualTo: username)
+          .get()
+          .whenComplete(() => state = state.copyWith(isLoading: false));
+
+      return querySnapshot.docs.isNotEmpty;
+    } catch (error) {
+      if(context.mounted){
+        toast(context: context, message: error.toString(), type: ToastificationType.error);
+      }
+    }
+    return null;
   }
 }

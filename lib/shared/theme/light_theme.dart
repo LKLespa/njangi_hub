@@ -7,5 +7,6 @@ ThemeData lightTheme = ThemeData(
     secondary: secondaryColor,
     error: Colors.red,
   ),
+  appBarTheme: darkTheme.appBarTheme,
   useMaterial3: true,
 );

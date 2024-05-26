@@ -6,6 +6,7 @@ import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:pinput/pinput.dart';
 
+
 class OtpPage extends HookConsumerWidget {
   OtpPage({super.key});
 
@@ -33,7 +34,6 @@ class OtpPage extends HookConsumerWidget {
     );
 
     return Scaffold(
-      // color: Colors.transparent,
       appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
@@ -52,15 +52,10 @@ class OtpPage extends HookConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // const Gap(50),
-                        // Hero(
-                        //     tag: 'logo',
-                        //     child: Image.asset(Assets.imagesLogoVertical)),
-                        // const Gap(5),
                         Text('Verification',
                             style: Theme.of(context)
                                 .textTheme
-                                .headlineLarge
+                                .headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.w700)),
                         const Gap(15),
                         Text(

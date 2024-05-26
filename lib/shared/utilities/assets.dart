@@ -11,5 +11,6 @@ class Assets {
   static const String imagesLogoOnly = 'assets/images/logo-only.png';
   static const String imagesLogoVertical = 'assets/images/logo-vertical.png';
   static const String imagesPolygon05 = 'assets/images/Polygon05.png';
+  static const String imagesUser = 'assets/images/user.png';
 
 }

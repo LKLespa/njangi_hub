@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
             : savedThemeMode!.isLight
                 ? ThemeMode.light
                 : ThemeMode.system,
-        initialRoute: '/splash',
+        initialRoute: PageRoutes.userInformation,
         routes: _routes,
       ),
     );
@@ -47,12 +47,12 @@ class MyApp extends StatelessWidget {
 }
 //695747281
 final _routes = {
-  '/splash': (context) => const LauncherScreen(),
-  '/home': (context) => const MyHomePage(),
-  '/intro': (context) => const IntroScreen(),
-  '/login': (context) => LoginPage(),
-  '/register': (context) => RegisterPage(),
-  '/otp': (context) => OtpPage(),
+  PageRoutes.splash: (context) => const SplashScreen(),
+  PageRoutes.home: (context) => const MyHomePage(),
+  PageRoutes.intro: (context) => const IntroScreen(),
+  PageRoutes.login: (context) => LoginWithPhoneNumberPage(),
+  PageRoutes.otpVerify: (context) => OtpPage(),
+  PageRoutes.userInformation: (context) => UserInformationRegisterationPage(),
 };
 
 // Platform  Firebase App Id
