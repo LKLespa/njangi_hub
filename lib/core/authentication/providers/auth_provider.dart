@@ -10,7 +10,7 @@ import 'package:toastification/toastification.dart';
 
 part 'auth_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AuthNotifier extends _$AuthNotifier {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;

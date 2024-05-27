@@ -22,7 +22,7 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
     final ValueNotifier<String?> userNameError = useState(null);
 
     if(context.mounted){
-      print("User information in registeration screen ${authStateNotifier.state}");
+      print("User information in registeration screen ${authState}");
     }
 
     Future<void> selectImage() async {
