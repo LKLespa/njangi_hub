@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'njangi-hub.appspot.com',
     measurementId: 'G-EBZ7KFCWE3',
   );
+
 }

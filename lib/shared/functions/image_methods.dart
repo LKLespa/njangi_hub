@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:image_cropper/image_cropper.dart';
+// import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:njangi_hub/shared/functions/toast.dart';
 import 'package:toastification/toastification.dart';
@@ -64,17 +64,17 @@ Future<File?> getLostImage() async {
   print("No Image found in Lost Data response");
   return null;
 }
-
-Future<File?> cropImage(imageFilePath) async{
-  final croppedFile = await ImageCropper().cropImage(
-      sourcePath: imageFilePath,
-    maxHeight: 400,
-    maxWidth: 400,
-    aspectRatioPresets: [
-      CropAspectRatioPreset.square,
-    ],
-    compressQuality: 80,
-  );
-
-  return croppedFile != null ? File(croppedFile.path) : null;
-}
+//
+// Future<File?> cropImage(imageFilePath) async{
+//   final croppedFile = await ImageCropper().cropImage(
+//       sourcePath: imageFilePath,
+//     maxHeight: 400,
+//     maxWidth: 400,
+//     aspectRatioPresets: [
+//       CropAspectRatioPreset.square,
+//     ],
+//     compressQuality: 80,
+//   );
+//
+//   return croppedFile != null ? File(croppedFile.path) : null;
+// }

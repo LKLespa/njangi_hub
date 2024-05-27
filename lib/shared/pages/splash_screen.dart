@@ -27,15 +27,7 @@ class _LauncherScreenState extends ConsumerState<SplashScreen> {
         if (user != null) {
           print("User exists");
           final authProvider = ref.read(auth.authNotifierProvider.notifier);
-          final userExists = await authProvider.checkIfUserExistsAndGetUserFromFirestore(user);
-          if(mounted){
-            if(userExists){
-              Navigator.pushReplacementNamed(context, PageRoutes.home);
-            } else {
-              Navigator.pushReplacementNamed(context, PageRoutes.userInformation);
-            }
-          }
-          print('Njangi user, ${user.toString()}');
+          await authProvider.checkIfUserExistsAndGetUserFromFirestoreAndContinue(user: user, context: context);
         } else {
           Navigator.pushReplacementNamed(context, PageRoutes.intro);
         }

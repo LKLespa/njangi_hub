@@ -25,6 +25,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ThemeMode getThemeMode() {
+      if (savedThemeMode != null) {
+        return savedThemeMode!.isDark
+            ? ThemeMode.dark
+            : savedThemeMode!.isLight
+                ? ThemeMode.light
+                : ThemeMode.system;
+      }
+      return ThemeMode.system;
+    }
     return AdaptiveTheme(
       light: lightTheme,
       dark: darkTheme,
@@ -34,12 +44,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: theme,
         darkTheme: darkTheme,
-        themeMode: savedThemeMode!.isDark
-            ? ThemeMode.dark
-            : savedThemeMode!.isLight
-                ? ThemeMode.light
-                : ThemeMode.system,
-        initialRoute: PageRoutes.userInformation,
+        themeMode: getThemeMode(),
+        initialRoute: PageRoutes.splash,
         routes: _routes,
       ),
     );

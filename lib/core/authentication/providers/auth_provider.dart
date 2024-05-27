@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart' as auth;
 import 'package:njangi_hub/shared/shared.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -18,27 +19,6 @@ class AuthNotifier extends _$AuthNotifier {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late String verificationId;
 
-  Future<void> _checkFirebaseUserAndContinue(
-      {required BuildContext context,
-      required PhoneAuthCredential phoneCredential,
-      required UserCredential userCredential}) async {
-    final firebaseUser = userCredential.user;
-    if (firebaseUser != null) {
-      final userExists =
-          await checkIfUserExistsAndGetUserFromFirestore(firebaseUser);
-      if (context.mounted) {
-        if (userExists) {
-          print("User already exists ${state.user}");
-          Navigator.of(context).pushReplacementNamed(PageRoutes.home);
-        } else {
-          print("User doesn't exists ${state.tempUser}");
-          Navigator.of(context)
-              .pushReplacementNamed(PageRoutes.userInformation);
-        }
-      }
-    }
-  }
-
   Future<void> verifyPhoneAndSignIn(
       {required BuildContext context, required String smsCode}) async {
     state = state.copyWith(isLoading: true);
@@ -47,8 +27,12 @@ class AuthNotifier extends _$AuthNotifier {
 
     await _auth.signInWithCredential(credential).then((value) async {
       print("User in sign in: ${value.user}");
-      _checkFirebaseUserAndContinue(
-          context: context, phoneCredential: credential, userCredential: value);
+      final user = value.user;
+      if(user != null) {
+        checkIfUserExistsAndGetUserFromFirestoreAndContinue(
+            context: context,
+            user: user);
+      }
     }).catchError((error) {
       state = state.copyWith(isLoading: false, error: error.toString());
       toast(
@@ -63,6 +47,7 @@ class AuthNotifier extends _$AuthNotifier {
     state =
         state.copyWith(isAuthenticating: true, isLoading: true, error: null);
     print("Phone number: $phoneNumber");
+
     await _auth
         .verifyPhoneNumber(
             phoneNumber: phoneNumber,
@@ -70,10 +55,12 @@ class AuthNotifier extends _$AuthNotifier {
             verificationCompleted: (PhoneAuthCredential credential) async {
               await _auth.signInWithCredential(credential).then((value) async {
                 print("User in verification: ${value.user}");
-                _checkFirebaseUserAndContinue(
-                    context: context,
-                    phoneCredential: credential,
-                    userCredential: value);
+                final user = value.user;
+                if(user != null) {
+                  checkIfUserExistsAndGetUserFromFirestoreAndContinue(
+                      context: context,
+                      user: user);
+                }
               });
             },
             verificationFailed: (e) {
@@ -114,49 +101,61 @@ class AuthNotifier extends _$AuthNotifier {
     });
   }
 
-  Future<bool> checkIfUserExistsAndGetUserFromFirestore(User user) async {
-    const source = Source.cache;
+  Future<bool?> checkIfUserExistsAndGetUserFromFirestoreAndContinue(
+      {required User user, required BuildContext context, bool shouldNavigate = true}) async {
     state = state.copyWith(isLoading: true);
-    DocumentSnapshot documentSnapshot = await _db
-        .collection("users")
-        .doc(user.uid)
-        .get(const GetOptions(source: source))
-        .whenComplete(() => state = state.copyWith(isLoading: false));
-    if (documentSnapshot.exists) {
-      state = state.copyWith(
-          isLoading: false,
-          isAuthenticating: false,
-          user: auth.User.fromJson(
-              documentSnapshot.data() as Map<String, dynamic>));
-      // TODO: Save data to hive local storage
-    } else {
-      state = state.copyWith(
-          isLoading: false,
-          user: null,
-          tempUser: auth.User(
-              uid: user.uid,
-              phone: user.phoneNumber,
-              token: user.refreshToken));
+    try {
+      final docRef = _db.collection("users").doc(user.uid);
+      final userExist = await docRef.get().then(
+            (DocumentSnapshot doc) {
+          if (doc.exists) {
+            state = state.copyWith(user: auth.User.fromJson(doc.data() as Map<String, dynamic>), tempUser: null, isAuthenticating: false);
+            print("User already exists ${state.user}");
+            if(shouldNavigate){
+              Navigator.of(context).pushReplacementNamed(PageRoutes.home);
+            }
+            return true;
+          } else {
+            state = state.copyWith(tempUser: auth.User(uid: user.uid, phone: user.phoneNumber, email: user.email), user: null );
+            print("User does not exist $state");
+            if(shouldNavigate){
+              Navigator.of(context)
+                  .pushReplacementNamed(PageRoutes.userInformation);
+            }
+            return false;
+          }
+        },
+      ).whenComplete(() => state = state.copyWith(isLoading: false));
+      return userExist;
+    } catch (error) {
+      if(context.mounted){
+        toast(
+            context: context,
+            message: error.toString(),
+            type: ToastificationType.error);
+      }
+      print("Failed to CHECK: $error}");
+      return null;
     }
-    return documentSnapshot.exists;
   }
 
   Future<bool?> checkIfUsernameExist(
       {required String username, required BuildContext context}) async {
     state = state.copyWith(isLoading: true);
     try {
-      final querySnapshot = await _db
-          .collection("users")
-          .where("username", isEqualTo: username)
-          .get()
-          .whenComplete(() => state = state.copyWith(isLoading: false));
+      final docRef = _db.collection("users").where("username", isEqualTo: username);
+      final userNameExist = await docRef.get().then((querySnapshot){
+        return querySnapshot.docs.isNotEmpty;
+      });
+      return userNameExist;
 
-      return querySnapshot.docs.isNotEmpty;
-    } catch (error) {
+  } catch (error) {
       if(context.mounted){
         toast(context: context, message: error.toString(), type: ToastificationType.error);
       }
+      return null;
+    } finally {
+      state = state.copyWith(isLoading: false);
     }
-    return null;
   }
 }

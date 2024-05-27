@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:njangi_hub/core/authentication/authentication.dart';
 
-class MyHomePage extends HookWidget {
+class MyHomePage extends HookConsumerWidget {
 
    final List<Widget> _widgetOptions = const <Widget>[
     Text('Home'),
@@ -12,7 +15,9 @@ class MyHomePage extends HookWidget {
   const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authNotifierProvider);
+    print("User Information $authState");
     final selectedIndex = useState(0);
     return Scaffold(
       appBar: AppBar(
