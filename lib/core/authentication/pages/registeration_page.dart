@@ -14,16 +14,16 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authStateNotifier = ref.watch(authNotifierProvider.notifier);
+    final authStateNotifier = ref.read(authNotifierProvider.notifier);
     final authState = ref.watch(authNotifierProvider);
     final userImage = useState('');
     final displayName = useState('');
     final userName = useState('');
     final ValueNotifier<String?> userNameError = useState(null);
 
-    // if(context.mounted){
-    //   print("User information in registeration screen ${authState}");
-    // }
+    if(context.mounted){
+      print("User information in registeration screen ${authStateNotifier.state}");
+    }
 
     Future<void> selectImage() async {
       File? fileImage, croppedFileImage;

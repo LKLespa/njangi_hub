@@ -12,12 +12,17 @@ part 'auth_provider.g.dart';
 
 @riverpod
 class AuthNotifier extends _$AuthNotifier {
-  @override
-  auth.AuthState build() => const auth.AuthState();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late String verificationId;
+
+  @override
+  auth.AuthState build(){
+    print("AUTHSTATE HAS BEEN SET");
+    _db.settings = const Settings(persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+    return const auth.AuthState();
+  }
 
   Future<void> verifyPhoneAndSignIn(
       {required BuildContext context, required String smsCode}) async {
