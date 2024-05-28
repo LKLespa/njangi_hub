@@ -23,7 +23,7 @@ mixin _$User {
   String get uid => throw _privateConstructorUsedError;
   String? get token => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
-  String? get userName => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String get aboutMe => throw _privateConstructorUsedError;
@@ -48,7 +48,7 @@ abstract class $UserCopyWith<$Res> {
       {String uid,
       String? token,
       String? name,
-      String? userName,
+      String? username,
       String? email,
       String? phone,
       String aboutMe,
@@ -76,7 +76,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? uid = null,
     Object? token = freezed,
     Object? name = freezed,
-    Object? userName = freezed,
+    Object? username = freezed,
     Object? email = freezed,
     Object? phone = freezed,
     Object? aboutMe = null,
@@ -100,9 +100,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      userName: freezed == userName
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String?,
       email: freezed == email
           ? _value.email
@@ -155,7 +155,7 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       {String uid,
       String? token,
       String? name,
-      String? userName,
+      String? username,
       String? email,
       String? phone,
       String aboutMe,
@@ -180,7 +180,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? uid = null,
     Object? token = freezed,
     Object? name = freezed,
-    Object? userName = freezed,
+    Object? username = freezed,
     Object? email = freezed,
     Object? phone = freezed,
     Object? aboutMe = null,
@@ -204,9 +204,9 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String?,
-      userName: freezed == userName
-          ? _value.userName
-          : userName // ignore: cast_nullable_to_non_nullable
+      username: freezed == username
+          ? _value.username
+          : username // ignore: cast_nullable_to_non_nullable
               as String?,
       email: freezed == email
           ? _value.email
@@ -255,7 +255,7 @@ class _$UserImpl extends _User {
       {required this.uid,
       this.token,
       this.name,
-      this.userName,
+      this.username,
       this.email,
       this.phone,
       this.aboutMe = '',
@@ -279,7 +279,7 @@ class _$UserImpl extends _User {
   @override
   final String? name;
   @override
-  final String? userName;
+  final String? username;
   @override
   final String? email;
   @override
@@ -317,7 +317,7 @@ class _$UserImpl extends _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, token: $token, name: $name, userName: $userName, email: $email, phone: $phone, aboutMe: $aboutMe, photo: $photo, isOnline: $isOnline, lastSeen: $lastSeen, createdAt: $createdAt, groupsGIDs: $groupsGIDs, privateChatsCIDs: $privateChatsCIDs)';
+    return 'User(uid: $uid, token: $token, name: $name, username: $username, email: $email, phone: $phone, aboutMe: $aboutMe, photo: $photo, isOnline: $isOnline, lastSeen: $lastSeen, createdAt: $createdAt, groupsGIDs: $groupsGIDs, privateChatsCIDs: $privateChatsCIDs)';
   }
 
   @override
@@ -328,8 +328,8 @@ class _$UserImpl extends _User {
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.token, token) || other.token == token) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.userName, userName) ||
-                other.userName == userName) &&
+            (identical(other.username, username) ||
+                other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.aboutMe, aboutMe) || other.aboutMe == aboutMe) &&
@@ -353,7 +353,7 @@ class _$UserImpl extends _User {
       uid,
       token,
       name,
-      userName,
+      username,
       email,
       phone,
       aboutMe,
@@ -383,7 +383,7 @@ abstract class _User extends User {
       {required final String uid,
       final String? token,
       final String? name,
-      final String? userName,
+      final String? username,
       final String? email,
       final String? phone,
       final String aboutMe,
@@ -404,7 +404,7 @@ abstract class _User extends User {
   @override
   String? get name;
   @override
-  String? get userName;
+  String? get username;
   @override
   String? get email;
   @override

@@ -7,34 +7,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
-class UserInformationRegisterationPage extends HookConsumerWidget {
-  UserInformationRegisterationPage({super.key});
+class UserInformationRegistrationPage extends HookConsumerWidget {
+  UserInformationRegistrationPage({super.key});
 
   final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authStateNotifier = ref.read(authNotifierProvider.notifier);
-    final authState = ref.watch(authNotifierProvider);
     final userImage = useState('');
     final displayName = useState('');
     final userName = useState('');
     final ValueNotifier<String?> userNameError = useState(null);
 
-    if(context.mounted){
-      print("User information in registeration screen ${authState}");
-    }
-
     Future<void> selectImage() async {
-      File? fileImage, croppedFileImage;
+      File? fileImage;
       Future<void> onSelect(bool camera) async {
-        fileImage = await pickImage(context: context, fromCamera: false);
+        fileImage = await pickImage(fromCamera: camera);
         if (fileImage != null) {
           // TODO: Crop the image
-          // croppedFileImage = await cropImage(fileImage!.path);
-          // if (croppedFileImage != null) {
-          //   userImage.value = croppedFileImage!.path;
-          // } else {
           userImage.value = fileImage!.path;
           // }
           if (context.mounted) {
@@ -87,29 +78,6 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
       }
     }
 
-    Future<void> validateAndProceed() async {
-      if (formKey.currentState!.validate()) {
-        final bool? userNameExist = await authStateNotifier
-            .checkIfUsernameExist(context: context, username: userName.value);
-
-        if (userNameExist != null && !userNameExist) {
-          userNameError.value = null;
-          authState.copyWith.tempUser!.call(
-              userName: userName.value,
-              photo: userImage.value,
-              name: userName.value);
-          print('Ok');
-          if (context.mounted) {
-            Navigator.of(context).pushNamed(PageRoutes.enterEmail);
-          }
-        }
-        if (userNameExist != null && userNameExist) {
-          userNameError.value = 'Username already exist';
-          return;
-        }
-      }
-    }
-
     getLostPickedImage();
 
     return Scaffold(
@@ -127,7 +95,7 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text('Verification',
+                      Text('User Information',
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall
@@ -168,8 +136,8 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
                           return null;
                         },
                         decoration: const InputDecoration(
-                          hintText: 'Enter your name',
-                        ),
+                            hintText: 'Enter your name',
+                            prefixIcon: Icon(Icons.person)),
                       ),
                       const Gap(20),
                       if (ref.watch(authNotifierProvider).isLoading)
@@ -177,12 +145,19 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
                       TextFormField(
                         textInputAction: TextInputAction.done,
                         onChanged: (value) => userName.value = value.trim(),
-                        onEditingComplete: () => validateAndProceed(),
+                        onEditingComplete: () {
+                          authStateNotifier.validateFormAndProceed(
+                              formKey: formKey,
+                              context: context,
+                              error: userNameError,
+                              data: {
+                                'displayName': displayName.value,
+                                'username': userName.value,
+                                'userImage': userImage.value
+                              });
+                        },
                         validator: (value) {
-                          if (value!.trim().isEmpty) {
-                            return 'Please enter your username';
-                          }
-                          if (!RegExp(r'^[a-zA-Z0-9_]+$')
+                          if (value!.trim().isNotEmpty && !RegExp(r'^[a-zA-Z0-9_]+$')
                               .hasMatch(value.trim())) {
                             // If the value contains symbols and spaces, return an error message
                             return 'Use only letters, numbers, and underscores (_)';
@@ -193,6 +168,7 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
                           helperText:
                               'Use only contain letters, numbers, and underscores (_)',
                           hintText: 'Username',
+                          prefixIcon: const Icon(Icons.person),
                           errorText: userNameError.value,
                         ),
                       ),
@@ -201,7 +177,17 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
                         children: [
                           Expanded(
                               child: FilledButton(
-                                  onPressed: validateAndProceed,
+                                  onPressed: () {
+                                    authStateNotifier.validateFormAndProceed(
+                                        formKey: formKey,
+                                        context: context,
+                                        error: userNameError,
+                                        data: {
+                                          'displayName': displayName.value,
+                                          'username': userName.value,
+                                          'userImage': userImage.value
+                                        });
+                                  },
                                   child: const Text('Continue'))),
                         ],
                       )

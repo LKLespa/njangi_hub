@@ -11,7 +11,7 @@ class User with _$User {
     required String uid,
     String? token,
     String? name,
-    String? userName,
+    String? username,
     String? email,
     String? phone,
     @Default('') String aboutMe,

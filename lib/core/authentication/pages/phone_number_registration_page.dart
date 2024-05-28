@@ -28,6 +28,18 @@ class LoginWithPhoneNumberPage extends HookConsumerWidget {
       e164Key: '',
     ));
 
+    void validate() {
+      if (formKey.currentState!.validate()) {
+        formKey.currentState!.save();
+        ref
+            .watch(authNotifierProvider.notifier)
+            .signInWithPhoneNumber(
+            phoneNumber:
+            "+${selectedCountry.value.phoneCode}${phoneNumber.value}",
+            context: context);
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
@@ -58,7 +70,8 @@ class LoginWithPhoneNumberPage extends HookConsumerWidget {
                       TextFormField(
                         maxLength: 10,
                         keyboardType: TextInputType.phone,
-                        textInputAction: TextInputAction.next,
+                        textInputAction: TextInputAction.done,
+                        onEditingComplete: validate,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600, fontSize: 20, letterSpacing: 2),
                         decoration: InputDecoration(
                           filled: true,
@@ -119,21 +132,13 @@ class LoginWithPhoneNumberPage extends HookConsumerWidget {
                         },
                       ),
                       const Gap(10),
-                      authState.isLoading ? const LoadingWidget() : Row(
+                      if(authState.isLoading)
+                        const LoadingWidget(),
+                      Row(
                           children: [
                             Expanded(
                               child: FilledButton(
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    formKey.currentState!.save();
-                                    ref
-                                        .watch(authNotifierProvider.notifier)
-                                        .signInWithPhoneNumber(
-                                        phoneNumber:
-                                        "+${selectedCountry.value.phoneCode}${phoneNumber.value}",
-                                        context: context);
-                                  }
-                                },
+                                onPressed: validate,
                                 child: const Text('Login'),
                               ),
                             ),
@@ -151,15 +156,11 @@ class LoginWithPhoneNumberPage extends HookConsumerWidget {
                       color: Colors.grey,
                     ),
                     Center(
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Text("I have an account",
+                            child: Text("NjangiHub",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyLarge
-                                    ?.copyWith(color: primaryColor))))
+                                    ?.copyWith(color: primaryColor)))
                   ],
                 ),
               ],

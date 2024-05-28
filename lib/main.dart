@@ -10,6 +10,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/firebase_options.dart';
 import 'package:njangi_hub/shared/shared.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,26 +32,22 @@ void main() async {
       final docRef = db.collection("users").doc(user.uid);
       initialRoute = await docRef.get().then((doc) {
         if (doc.exists) {
-          print("DOCUMENT DATA: ${doc.data()}");
           njangiUser = User.fromJson(doc.data() as Map<String, dynamic>);
           userIsRegistered = true;
           return PageRoutes.home;
         } else {
           njangiUser =
-              User(uid: user.uid, phone: user.phoneNumber, email: user.email);
+              User(uid: user.uid, phone: user.phoneNumber, email: user.email, createdAt: user.metadata.creationTime, lastSeen: DateTime.now());
           userIsRegistered = false;
-          print("NO SUCH DOCUMENT!");
           return PageRoutes.userInformation;
         }
       }).catchError((e) {
-        print("ERROR GETTING DOCUMENT: $e");
         return PageRoutes.splash;
       });
     } else {
       initialRoute = PageRoutes.intro;
     }
   } catch (e) {
-    print("AN ERROR OCCURRED: $e");
     initialRoute = PageRoutes.splash;
   }
 
@@ -83,10 +80,13 @@ class MyApp extends StatefulHookConsumerWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+
+  late StreamSubscription<InternetStatus> internetConnectionListener;
   // This widget is the root of your application.
   @override
   void initState() {
     super.initState();
+    internetConnectionListener = listenToInternetChanges();
     final authState = ref.read(authNotifierProvider);
     final authStateNotifier = ref.read(authNotifierProvider.notifier);
     Future.delayed(Duration.zero, () async {
@@ -102,6 +102,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   void dispose() {
+    internetConnectionListener.cancel();
     super.dispose();
   }
 
@@ -123,14 +124,16 @@ class _MyAppState extends ConsumerState<MyApp> {
       light: lightTheme,
       dark: darkTheme,
       initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
-      builder: (theme, darkTheme) => MaterialApp(
-        title: 'NjangiHub',
-        debugShowCheckedModeBanner: false,
-        theme: theme,
-        darkTheme: darkTheme,
-        themeMode: getThemeMode(),
-        initialRoute: widget.initialRoute,
-        routes: _routes,
+      builder: (theme, darkTheme) => ToastificationWrapper(
+        child: MaterialApp(
+          title: 'NjangiHub',
+          debugShowCheckedModeBanner: false,
+          theme: theme,
+          darkTheme: darkTheme,
+          themeMode: getThemeMode(),
+          initialRoute: widget.initialRoute,
+          routes: _routes,
+        ),
       ),
     );
   }
@@ -143,7 +146,8 @@ final _routes = {
   PageRoutes.intro: (context) => const IntroScreen(),
   PageRoutes.login: (context) => LoginWithPhoneNumberPage(),
   PageRoutes.otpVerify: (context) => OtpPage(),
-  PageRoutes.userInformation: (context) => UserInformationRegisterationPage(),
+  PageRoutes.userInformation: (context) => UserInformationRegistrationPage(),
+  PageRoutes.enterEmail: (context) => EmailVerificationPage(),
 };
 
 // Platform  Firebase App Id

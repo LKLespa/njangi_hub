@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +18,10 @@ class AuthNotifier extends _$AuthNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   late String verificationId;
+  int? resendToken;
 
   @override
   auth.AuthState build() {
-    print("AUTHSTATE HAS BEEN SET");
     _db.settings = const Settings(
         persistenceEnabled: true,
         cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
@@ -35,10 +38,10 @@ class AuthNotifier extends _$AuthNotifier {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsCode);
 
-    final isConnected = await checkInternetConnectivity(context: context, showIfTrue: false, showIfFalse: true);
-    if (isConnected){
+    final isConnected = await checkInternetConnectivity(
+        showIfConnected: false, showIfNotConnected: true);
+    if (isConnected) {
       await _auth.signInWithCredential(credential).then((value) async {
-        print("User in sign in: ${value.user}");
         final user = value.user;
         if (user != null) {
           _checkIfUserExistsAndGetUserFromFirestoreAndContinue(
@@ -46,73 +49,66 @@ class AuthNotifier extends _$AuthNotifier {
         }
       }).catchError((error) {
         state = state.copyWith(isLoading: false, error: error.toString());
-        toast(
-            context: context,
-            message: "An Error Occurred",
-            type: ToastificationType.error);
+        toast(message: "An Error Occurred", type: ToastificationType.error);
       });
     } else {
       state = state.copyWith(isLoading: false, error: "No Internet Connection");
     }
   }
 
+  // TODO: Resend code
+
   Future<void> signInWithPhoneNumber(
-      {required String phoneNumber, required BuildContext context}) async {
+      {required String phoneNumber, required BuildContext context, bool shouldResendToken = false}) async {
     state =
         state.copyWith(isAuthenticating: true, isLoading: true, error: null);
-    print("Phone number: $phoneNumber");
 
-    final isConnected = await checkInternetConnectivity(context: context, showIfTrue: false, showIfFalse: true);
-    if(isConnected){
+    final isConnected = await checkInternetConnectivity(
+        showIfConnected: false, showIfNotConnected: true);
+    if (isConnected) {
       await _auth
           .verifyPhoneNumber(
-          phoneNumber: phoneNumber,
-          timeout: const Duration(seconds: 60),
-          verificationCompleted: (PhoneAuthCredential credential) async {
-            await _auth.signInWithCredential(credential).then((value) async {
-              print("User in verification: ${value.user}");
-              final user = value.user;
-              if (user != null) {
-                _checkIfUserExistsAndGetUserFromFirestoreAndContinue(
-                    context: context, user: user);
-              }
-            });
-          },
-          verificationFailed: (e) {
-            state = state.copyWith(isLoading: false, error: e.message);
-            toast(
-                context: context,
-                title: "Authentication Error",
-                message: e.message!,
-                type: ToastificationType.error);
-            print("Authentication Error: ${e.message}");
-          },
-          codeSent: (verifyId, resendToken) {
-            verificationId = verifyId;
-            toast(
-                context: context,
-                message:
-                "A 6-digit verification code was sent to $phoneNumber",
-                type: ToastificationType.info);
-            state = state.copyWith(
-                isLoading: false,
-                error: null,
-                tempUser: auth.User(
-                    uid: '',
-                    phone: phoneNumber,
-                    isOnline: true,
-                    aboutMe: ''));
-            Navigator.of(context).pushNamed(PageRoutes.otpVerify);
-          },
-          codeAutoRetrievalTimeout: (value) {})
+              forceResendingToken: shouldResendToken ? resendToken : null,
+              phoneNumber: phoneNumber,
+              timeout: const Duration(seconds: 60),
+              verificationCompleted: (PhoneAuthCredential credential) async {
+                await _auth
+                    .signInWithCredential(credential)
+                    .then((value) async {
+                  final user = value.user;
+                  if (user != null) {
+                    _checkIfUserExistsAndGetUserFromFirestoreAndContinue(
+                        context: context, user: user);
+                  }
+                });
+              },
+              verificationFailed: (e) {
+                state = state.copyWith(isLoading: false, error: e.message);
+                toast(message: e.message!, type: ToastificationType.error);
+              },
+              codeSent: (verifyId, resToken) {
+                verificationId = verifyId;
+                resendToken = resToken;
+                toast(
+                    message:
+                        "A 6-digit verification code was sent to $phoneNumber",
+                    type: ToastificationType.info);
+                state = state.copyWith(
+                    isLoading: false,
+                    error: null,
+                    tempUser: auth.User(
+                      uid: '',
+                      phone: phoneNumber,
+                    ));
+                if(!shouldResendToken) {
+                  Navigator.of(context).pushNamed(PageRoutes.otpVerify);
+                }
+              },
+              codeAutoRetrievalTimeout: (value) {})
           .catchError((error, stackTrace) {
         state = state.copyWith(
             isLoading: false, error: error.toString().substring(0, 20));
-        toast(
-            context: context,
-            message: error.toString(),
-            type: ToastificationType.error);
-        print("Catch Error$error");
+        toast(message: error.toString(), type: ToastificationType.error);
       });
     } else {
       state = state.copyWith(isLoading: false, error: "No Internet Connection");
@@ -133,7 +129,6 @@ class AuthNotifier extends _$AuthNotifier {
                 user: auth.User.fromJson(doc.data() as Map<String, dynamic>),
                 tempUser: null,
                 isAuthenticating: false);
-            print("User already exists ${state.user}");
             if (shouldNavigate) {
               Navigator.of(context).pushReplacementNamed(PageRoutes.home);
             }
@@ -141,9 +136,11 @@ class AuthNotifier extends _$AuthNotifier {
           } else {
             state = state.copyWith(
                 tempUser: auth.User(
-                    uid: user.uid, phone: user.phoneNumber, email: user.email),
+                    uid: user.uid,
+                    phone: user.phoneNumber,
+                    email: user.email,
+                    createdAt: user.metadata.creationTime),
                 user: null);
-            print("User does not exist $state");
             if (shouldNavigate) {
               Navigator.of(context)
                   .pushReplacementNamed(PageRoutes.userInformation);
@@ -155,36 +152,78 @@ class AuthNotifier extends _$AuthNotifier {
       return userExist;
     } catch (error) {
       if (context.mounted) {
-        toast(
-            context: context,
-            message: error.toString(),
-            type: ToastificationType.error);
+        toast(message: error.toString(), type: ToastificationType.error);
       }
-      print("Failed to CHECK: $error}");
       return null;
     }
   }
 
-  Future<bool?> checkIfUsernameExist(
-      {required String username, required BuildContext context}) async {
-    state = state.copyWith(isLoading: true);
-    try {
-      final docRef =
-          _db.collection("users").where("username", isEqualTo: username);
-      final userNameExist = await docRef.get().then((querySnapshot) {
-        final x = querySnapshot.metadata.isFromCache;
-        print('IS FROM CACHE $x');
-        return querySnapshot.docs.isNotEmpty;
-      });
-      return userNameExist;
-    } catch (error) {
-      if (context.mounted) {
-        toast(
-            context: context,
-            message: error.toString(),
-            type: ToastificationType.error);
+  Future<void> validateFormAndProceed(
+      {required GlobalKey<FormState> formKey,
+      required BuildContext context,
+      required ValueNotifier<String?> error,
+      required Map<String, dynamic> data}) async {
+    if (formKey.currentState!.validate()) {
+      try{
+        state = state.copyWith(isLoading: true);
+        final bool? userNameExist =
+            await checkIfUsernameExist(username: data['username']);
+        if (userNameExist != null && !userNameExist) {
+          error.value = null;
+          state = state.copyWith.tempUser!.call(
+              username: data['username'],
+              photo: data['userImage'],
+              name: data['displayName']);
+          if (context.mounted) {
+            Navigator.of(context).pushNamed(PageRoutes.enterEmail);
+          }
+        }
+        if (userNameExist != null && userNameExist) {
+          error.value = 'Username already exist';
+          return;
+        }
+      } catch (err) {
+        state = state.copyWith(error: err.toString());
+      } finally {
+        state = state.copyWith(isLoading: false);
       }
-      return null;
+    }
+  }
+
+  Future<void> registerUserToFirestore({required BuildContext context}) async {
+    state = state.copyWith(isLoading: true);
+    String? photoUrl;
+    try {
+      print("STATE: $state");
+      final bool hasConnection = await checkInternetConnectivity(
+          showIfConnected: false, showIfNotConnected: true);
+      if (hasConnection) {
+        final user = state.tempUser;
+        if (user != null) {
+          final photoPath = user.photo;
+          if(photoPath != null) {
+            photoUrl = await uploadFileToDb(
+                file: File(photoPath), path: "profile-photos/${user.uid}");
+            state = state.copyWith.tempUser!.call(photo: photoUrl);
+          }
+          _db
+              .collection("users")
+              .doc(user.uid)
+              .set(user.toJson())
+              .then((value) {
+            state = state.copyWith(
+                user: state.tempUser, tempUser: null, isAuthenticating: false);
+            if (context.mounted) {
+              toast(
+                  message: "Registration successful",
+                  type: ToastificationType.success);
+              Navigator.of(context).pushReplacementNamed(PageRoutes.home);
+            }
+          });
+        }
+      }
+    } catch (e) {
+      toast(message: e.toString(), type: ToastificationType.error);
     } finally {
       state = state.copyWith(isLoading: false);
     }
