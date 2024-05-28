@@ -1,56 +1,141 @@
+import 'dart:async';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart';
 import 'package:njangi_hub/firebase_options.dart';
 import 'package:njangi_hub/shared/shared.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  final db = FirebaseFirestore.instance;
+  final auth = firebase_auth.FirebaseAuth.instance;
+  final user = auth.currentUser;
+  String initialRoute = PageRoutes.otpVerify;
+  User? njangiUser;
+  bool userIsRegistered = false;
+  db.settings = const Settings(
+      persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+
+  try {
+    if (user != null) {
+      final docRef = db.collection("users").doc(user.uid);
+      initialRoute = await docRef.get().then((doc) {
+        if (doc.exists) {
+          print("DOCUMENT DATA: ${doc.data()}");
+          njangiUser = User.fromJson(doc.data() as Map<String, dynamic>);
+          userIsRegistered = true;
+          return PageRoutes.home;
+        } else {
+          njangiUser =
+              User(uid: user.uid, phone: user.phoneNumber, email: user.email);
+          userIsRegistered = false;
+          print("NO SUCH DOCUMENT!");
+          return PageRoutes.userInformation;
+        }
+      }).catchError((e) {
+        print("ERROR GETTING DOCUMENT: $e");
+        return PageRoutes.splash;
+      });
+    } else {
+      initialRoute = PageRoutes.intro;
+    }
+  } catch (e) {
+    print("AN ERROR OCCURRED: $e");
+    initialRoute = PageRoutes.splash;
+  }
+
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
   runApp(ProviderScope(
     child: MyApp(
       savedThemeMode: savedThemeMode,
+      initialRoute: initialRoute,
+      userIsRegistered: userIsRegistered,
+      njangiUser: njangiUser,
     ),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key, this.savedThemeMode});
+class MyApp extends StatefulHookConsumerWidget {
+  const MyApp(
+      {super.key,
+        this.njangiUser,
+        required this.userIsRegistered,
+        this.savedThemeMode,
+        required this.initialRoute});
+
   final AdaptiveThemeMode? savedThemeMode;
+  final String initialRoute;
+  final User? njangiUser;
+  final bool userIsRegistered;
+
+  @override
+  ConsumerState<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends ConsumerState<MyApp> {
   // This widget is the root of your application.
   @override
+  void initState() {
+    super.initState();
+    final authState = ref.read(authNotifierProvider);
+    final authStateNotifier = ref.read(authNotifierProvider.notifier);
+    Future.delayed(Duration.zero, () async {
+      if(widget.njangiUser != null) {
+        if(widget.userIsRegistered) {
+          authStateNotifier.updateState(authState.copyWith(user: widget.njangiUser));
+        } else {
+          authStateNotifier.updateState(authState.copyWith(tempUser: widget.njangiUser, isAuthenticating: true));
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     ThemeMode getThemeMode() {
-      if (savedThemeMode != null) {
-        return savedThemeMode!.isDark
+      if (widget.savedThemeMode != null) {
+        return widget.savedThemeMode!.isDark
             ? ThemeMode.dark
-            : savedThemeMode!.isLight
+            : widget.savedThemeMode!.isLight
                 ? ThemeMode.light
                 : ThemeMode.system;
       }
       return ThemeMode.system;
     }
+
     return AdaptiveTheme(
       light: lightTheme,
       dark: darkTheme,
-      initial: savedThemeMode ?? AdaptiveThemeMode.system,
+      initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(
         title: 'NjangiHub',
         debugShowCheckedModeBanner: false,
         theme: theme,
         darkTheme: darkTheme,
         themeMode: getThemeMode(),
-        initialRoute: PageRoutes.splash,
+        initialRoute: widget.initialRoute,
         routes: _routes,
       ),
     );
   }
 }
+
 //695747281
 final _routes = {
   PageRoutes.splash: (context) => const SplashScreen(),
@@ -67,7 +152,6 @@ final _routes = {
 // ios       1:35923112741:ios:b76e0cb9933b57b046e0cc
 // macos     1:35923112741:ios:db905a1ded5c095346e0cc
 // windows   1:35923112741:web:d03a9b505a33e63f46e0cc
-
 
 // Certificate fingerprints:
 // SHA1: 8E:A5:88:35:37:02:B5:0B:15:A6:96:CB:BD:C1:97:8E:8A:1A:65:D3

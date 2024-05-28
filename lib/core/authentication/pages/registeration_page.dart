@@ -94,10 +94,10 @@ class UserInformationRegisterationPage extends HookConsumerWidget {
 
         if (userNameExist != null && !userNameExist) {
           userNameError.value = null;
-          // authState.copyWith.tempUser!.call(
-          //     userName: userName.value,
-          //     photo: userImage.value,
-          //     name: userName.value);
+          authState.copyWith.tempUser!.call(
+              userName: userName.value,
+              photo: userImage.value,
+              name: userName.value);
           print('Ok');
           if (context.mounted) {
             Navigator.of(context).pushNamed(PageRoutes.enterEmail);

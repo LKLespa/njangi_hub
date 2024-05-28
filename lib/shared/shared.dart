@@ -9,4 +9,5 @@ export './utilities/assets.dart';
 export './utilities/page_routes.dart';
 
 export './functions/toast.dart';
-export './functions/image_methods.dart';
+export './functions/image_picker_cropper.dart';
+export './functions/check_internet_connectivity.dart';
