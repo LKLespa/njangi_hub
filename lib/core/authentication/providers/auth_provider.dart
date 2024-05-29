@@ -198,18 +198,19 @@ class AuthNotifier extends _$AuthNotifier {
       final bool hasConnection = await checkInternetConnectivity(
           showIfConnected: false, showIfNotConnected: true);
       if (hasConnection) {
-        final user = state.tempUser;
+        auth.User? user = state.tempUser;
         if (user != null) {
           final photoPath = user.photo;
           if(photoPath != null) {
             photoUrl = await uploadFileToDb(
                 file: File(photoPath), path: "profile-photos/${user.uid}");
             state = state.copyWith.tempUser!.call(photo: photoUrl);
+            user = user.copyWith(photo : photoUrl);
           }
           _db
               .collection("users")
               .doc(user.uid)
-              .set(user.toJson())
+              .set({...user.toJson(), "username_lowercase" : user.username!.toLowerCase()})
               .then((value) {
             state = state.copyWith(
                 user: state.tempUser, tempUser: null, isAuthenticating: false);

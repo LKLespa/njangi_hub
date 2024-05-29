@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
 void toast({ String? title, required String message, required ToastificationType type}) {
-  final msg = message.length > 50 ? "${message.substring(0, 50)}..." : message;
+  final msg = message.length > 75 ? "${message.substring(0, 75)}..." : message;
   Icon? icon;
   switch (type) {
     case ToastificationType.success:

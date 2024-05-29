@@ -148,6 +148,8 @@ final _routes = {
   PageRoutes.otpVerify: (context) => OtpPage(),
   PageRoutes.userInformation: (context) => UserInformationRegistrationPage(),
   PageRoutes.enterEmail: (context) => EmailVerificationPage(),
+  PageRoutes.settings: (context) => const SettingsPage(),
+  PageRoutes.profile: (context) => const ProfilePage(),
 };
 
 // Platform  Firebase App Id

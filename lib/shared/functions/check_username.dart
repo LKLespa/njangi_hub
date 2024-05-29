@@ -7,7 +7,7 @@ Future<bool?> checkIfUsernameExist({required String username}) async {
   db.settings = const Settings(persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   try {
     final docRef =
-    db.collection("users").where("username", isEqualTo: username);
+    db.collection("users").where("username_lowercase", isEqualTo: username.toLowerCase());
     final userNameExist = await docRef.get().then((querySnapshot) {
       return querySnapshot.docs.isNotEmpty;
     });
