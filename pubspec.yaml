@@ -35,13 +35,13 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
+  # cupertino_icons: ^1.0.6
   country_picker: ^2.0.25
-  lottie: ^3.1.0
-  google_fonts: ^6.2.1
-  hive: ^2.2.3
+  # lottie: ^3.1.0
+  # google_fonts: ^6.2.1
+  # hive: ^2.2.3
   pinput: ^4.0.0
-  uuid: ^4.4.0
+  # uuid: ^4.4.0
   adaptive_theme: ^3.6.0
   firebase_core: ^2.31.1
   firebase_auth: ^4.19.6
@@ -51,20 +51,20 @@ dependencies:
   gap: ^3.0.1
   flutter_riverpod: ^2.5.1
   riverpod_annotation: ^2.3.5
-  smooth_page_indicator: ^1.1.0
-  page_transition: ^2.1.0
+  # smooth_page_indicator: ^1.1.0
+  # page_transition: ^2.1.0
   loading_animation_widget: ^1.2.1
-  flutter_launcher_icons: ^0.13.1
-  connectivity_plus: ^6.0.3
+  # connectivity_plus: ^6.0.3
   freezed: ^2.5.2
   flutter_hooks: ^0.20.5
   skeletonizer: ^1.1.2+1
-  rename: ^3.0.2
+  # rename: ^3.0.2
   hooks_riverpod: ^2.5.1
   internet_connection_checker_plus: ^2.3.0
   image_picker: ^1.1.1
   json_annotation: ^4.9.0
   freezed_annotation: ^2.4.1
+  flutter_native_splash: ^2.4.0
 #  image_cropper: ^6.0.0
 
 
@@ -83,6 +83,24 @@ dev_dependencies:
   custom_lint: ^0.6.4
   riverpod_lint: ^2.3.10
   json_serializable: ^6.8.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo-icon.png"
+  web:
+    generate: true
+    image_path: "assets/images/logo-icon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+    windows:
+      generate: true
+      image_path: "assets/images/logo-icon.png"
+      icon_size: 48 # min:48, max:256, default: 48
+    macos:
+      generate: true
+      image_path: "assets/images/logo-icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -7,7 +7,9 @@ class Assets {
   static const String imagesBlackMan = 'assets/images/black_man.jpg';
   static const String imagesCube = 'assets/images/cube.png';
   static const String imagesGradient1TopLeft = 'assets/images/Gradient1TopLeft.png';
+  static const String imagesLauncherIcon = 'assets/images/launcher-icon.png';
   static const String imagesLogo1 = 'assets/images/logo1.png';
+  static const String imagesLogoIcon = 'assets/images/logo-icon.png';
   static const String imagesLogoOnly = 'assets/images/logo-only.png';
   static const String imagesLogoVertical = 'assets/images/logo-vertical.png';
   static const String imagesPolygon05 = 'assets/images/Polygon05.png';
