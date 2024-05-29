@@ -1,6 +1,7 @@
 export './theme/theme.dart';
 
 export './widgets/widgets.dart';
+export './widgets/error_widget.dart';
 export './widgets/loading_widget.dart';
 
 export './pages/home.dart';

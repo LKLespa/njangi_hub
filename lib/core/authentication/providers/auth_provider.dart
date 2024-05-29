@@ -17,11 +17,19 @@ part 'auth_provider.g.dart';
 class AuthNotifier extends _$AuthNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  late String verificationId;
-  int? resendToken;
+  final firebaseUser = FirebaseAuth.instance.currentUser;
+  late String _verificationId;
+  int? _resendToken;
+  late StreamSubscription<User?> _authChangesListener;
 
   @override
   auth.AuthState build() {
+    _authChangesListener = auth.onAuthChanges(
+        whenUserHasData: (user, document) => state = state.copyWith(user: auth.User.fromJson(document.data() as Map<String, dynamic>)),
+        whenUserHasNoData: (user) => state = state.copyWith(user: null, tempUser: auth.User(uid: user.uid, phone: user.phoneNumber, email: user.email)),
+        whenNoUser: () => state = state.copyWith(user: null, tempUser: null),
+        onError: (e) => toast(title: "An error occurred", message: e.toString(), type: ToastificationType.error),
+    );
     _db.settings = const Settings(
         persistenceEnabled: true,
         cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
@@ -32,11 +40,15 @@ class AuthNotifier extends _$AuthNotifier {
     state = newState;
   }
 
+  void dispose(){
+    _authChangesListener.cancel();
+  }
+
   Future<void> verifyPhoneAndSignIn(
       {required BuildContext context, required String smsCode}) async {
     state = state.copyWith(isLoading: true);
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId, smsCode: smsCode);
+        verificationId: _verificationId, smsCode: smsCode);
 
     final isConnected = await checkInternetConnectivity(
         showIfConnected: false, showIfNotConnected: true);
@@ -56,19 +68,16 @@ class AuthNotifier extends _$AuthNotifier {
     }
   }
 
-  // TODO: Resend code
-
   Future<void> signInWithPhoneNumber(
       {required String phoneNumber, required BuildContext context, bool shouldResendToken = false}) async {
     state =
         state.copyWith(isAuthenticating: true, isLoading: true, error: null);
-
     final isConnected = await checkInternetConnectivity(
         showIfConnected: false, showIfNotConnected: true);
     if (isConnected) {
       await _auth
           .verifyPhoneNumber(
-              forceResendingToken: shouldResendToken ? resendToken : null,
+              forceResendingToken: shouldResendToken ? _resendToken : null,
               phoneNumber: phoneNumber,
               timeout: const Duration(seconds: 60),
               verificationCompleted: (PhoneAuthCredential credential) async {
@@ -87,8 +96,8 @@ class AuthNotifier extends _$AuthNotifier {
                 toast(message: e.message!, type: ToastificationType.error);
               },
               codeSent: (verifyId, resToken) {
-                verificationId = verifyId;
-                resendToken = resToken;
+                _verificationId = verifyId;
+                _resendToken = resToken;
                 toast(
                     message:
                         "A 6-digit verification code was sent to $phoneNumber",
@@ -195,6 +204,7 @@ class AuthNotifier extends _$AuthNotifier {
     String? photoUrl;
     try {
       print("STATE: $state");
+      _authChangesListener.pause();
       final bool hasConnection = await checkInternetConnectivity(
           showIfConnected: false, showIfNotConnected: true);
       if (hasConnection) {
@@ -218,14 +228,23 @@ class AuthNotifier extends _$AuthNotifier {
               toast(
                   message: "Registration successful",
                   type: ToastificationType.success);
+              final firebaseUser = _auth.currentUser;
+              if(firebaseUser != null && user != null){
+                firebaseUser.updateDisplayName(user.name);
+                firebaseUser.updatePhotoURL(user.photo);
+              }
               Navigator.of(context).pushReplacementNamed(PageRoutes.home);
             }
+            print("UPDATING USER");
+
+
           });
         }
       }
     } catch (e) {
       toast(message: e.toString(), type: ToastificationType.error);
     } finally {
+      _authChangesListener.resume();
       state = state.copyWith(isLoading: false);
     }
   }

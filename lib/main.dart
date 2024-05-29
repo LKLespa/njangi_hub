@@ -19,13 +19,13 @@ void main() async {
   );
 
   final db = FirebaseFirestore.instance;
-  final auth = firebase_auth.FirebaseAuth.instance;
-  final user = auth.currentUser;
-  String initialRoute = PageRoutes.otpVerify;
-  User? njangiUser;
-  bool userIsRegistered = false;
   db.settings = const Settings(
       persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+  final auth = firebase_auth.FirebaseAuth.instance;
+  final user = auth.currentUser;
+  String initialRoute = PageRoutes.splash;
+  User? njangiUser;
+  bool userIsRegistered = false;
 
   try {
     if (user != null) {
@@ -36,13 +36,15 @@ void main() async {
           userIsRegistered = true;
           return PageRoutes.home;
         } else {
-          njangiUser =
-              User(uid: user.uid, phone: user.phoneNumber, email: user.email, createdAt: user.metadata.creationTime, lastSeen: DateTime.now());
+          njangiUser = User(
+              uid: user.uid,
+              phone: user.phoneNumber,
+              email: user.email,
+              createdAt: user.metadata.creationTime,
+              lastSeen: DateTime.now());
           userIsRegistered = false;
           return PageRoutes.userInformation;
         }
-      }).catchError((e) {
-        return PageRoutes.splash;
       });
     } else {
       initialRoute = PageRoutes.intro;
@@ -65,10 +67,10 @@ void main() async {
 class MyApp extends StatefulHookConsumerWidget {
   const MyApp(
       {super.key,
-        this.njangiUser,
-        required this.userIsRegistered,
-        this.savedThemeMode,
-        required this.initialRoute});
+      this.njangiUser,
+      required this.userIsRegistered,
+      this.savedThemeMode,
+      required this.initialRoute});
 
   final AdaptiveThemeMode? savedThemeMode;
   final String initialRoute;
@@ -80,7 +82,6 @@ class MyApp extends StatefulHookConsumerWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-
   late StreamSubscription<InternetStatus> internetConnectionListener;
   // This widget is the root of your application.
   @override
@@ -90,11 +91,13 @@ class _MyAppState extends ConsumerState<MyApp> {
     final authState = ref.read(authNotifierProvider);
     final authStateNotifier = ref.read(authNotifierProvider.notifier);
     Future.delayed(Duration.zero, () async {
-      if(widget.njangiUser != null) {
-        if(widget.userIsRegistered) {
-          authStateNotifier.updateState(authState.copyWith(user: widget.njangiUser));
+      if (widget.njangiUser != null) {
+        if (widget.userIsRegistered) {
+          authStateNotifier
+              .updateState(authState.copyWith(user: widget.njangiUser));
         } else {
-          authStateNotifier.updateState(authState.copyWith(tempUser: widget.njangiUser, isAuthenticating: true));
+          authStateNotifier.updateState(authState.copyWith(
+              tempUser: widget.njangiUser, isAuthenticating: true));
         }
       }
     });
@@ -108,7 +111,6 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
     ThemeMode getThemeMode() {
       if (widget.savedThemeMode != null) {
         return widget.savedThemeMode!.isDark

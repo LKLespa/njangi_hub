@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,8 +17,10 @@ class MyHomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = useState(0);
-    final user = ref.watch(authNotifierProvider).user;
+    final authState = ref.watch(authNotifierProvider);
+    final user = authState.user;
     print("User: $user");
+    print("Firebase User: ${FirebaseAuth.instance.currentUser}");
     if (user == null) {
       return const Scaffold(
         body: Center(

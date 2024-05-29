@@ -7,3 +7,5 @@ export './models/user.dart';
 export './models/auth_state.dart';
 
 export './providers/auth_provider.dart';
+
+export './functions/on_auth_change.dart';
