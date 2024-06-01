@@ -23,11 +23,19 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
           ? null
           : DateTime.parse(json['createdAt'] as String),
       groupsGIDs: (json['groupsGIDs'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => e as Map<String, dynamic>)
+              .toList() ??
+          const [],
+      groupRequestsGIDs: (json['groupRequestsGIDs'] as List<dynamic>?)
+              ?.map((e) => e as Map<String, dynamic>)
+              .toList() ??
+          const [],
+      groupInvitesGIDs: (json['groupInvitesGIDs'] as List<dynamic>?)
+              ?.map((e) => e as Map<String, dynamic>)
               .toList() ??
           const [],
       privateChatsCIDs: (json['privateChatsCIDs'] as List<dynamic>?)
-              ?.map((e) => e as String)
+              ?.map((e) => e as Map<String, dynamic>)
               .toList() ??
           const [],
     );
@@ -46,5 +54,7 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'lastSeen': instance.lastSeen?.toIso8601String(),
       'createdAt': instance.createdAt?.toIso8601String(),
       'groupsGIDs': instance.groupsGIDs,
+      'groupRequestsGIDs': instance.groupRequestsGIDs,
+      'groupInvitesGIDs': instance.groupInvitesGIDs,
       'privateChatsCIDs': instance.privateChatsCIDs,
     };

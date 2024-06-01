@@ -14,31 +14,15 @@ class UserProfilePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final uid = ModalRoute.of(context)!.settings.arguments as String?;
-    final Stream<DocumentSnapshot> userStream =
-        FirebaseFirestore.instance.collection('users').doc(uid).snapshots();
+    final user = ModalRoute.of(context)!.settings.arguments as User;
     final currentUser = ref.watch(authNotifierProvider).user!;
 
-    return StreamBuilder<DocumentSnapshot>(
-        stream: userStream,
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) {
-            return err.ErrorWidget(error: snapshot.error);
-          }
-
-          User user = User(uid: '');
-          if (snapshot.hasData) {
-            print("Snapshot data ${snapshot.data!['name']}");
-            user = User.fromJson(snapshot.data!.data() as Map<String, dynamic>);
-          }
-          return Scaffold(
+    return Scaffold(
             appBar: AppBar(
               title: Text("${user.name}'s Profile"),
             ),
             body: SingleChildScrollView(
-              child: Skeletonizer(
-                enabled: snapshot.connectionState == ConnectionState.waiting,
-                child: Column(
+              child: Column(
                   children: [
                     const Gap(15),
                     Center(
@@ -127,12 +111,10 @@ class UserProfilePage extends HookConsumerWidget {
                       child: Text(user.aboutMe),
                     )
                   ],
-                ),
               ),
             ),
           );
-        });
-  }
+        }
 
   void _editNameAndUsername() {
     // TODO: Edit the name and username

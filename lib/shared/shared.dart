@@ -23,6 +23,9 @@ export './functions/check_username.dart';
 export './functions/image_picker_cropper.dart';
 export './functions/check_internet_connectivity.dart';
 
+export './models/group.dart';
+export './models/group_chat.dart';
 export './models/file_sources.dart';
+export './models/payment_account.dart';
 
 export './extentions/date_extentions.dart';

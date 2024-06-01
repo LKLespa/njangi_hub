@@ -19,8 +19,10 @@ class User with _$User {
     @Default(false) bool isOnline,
     DateTime? lastSeen,
     DateTime? createdAt,
-    @Default([]) List<String> groupsGIDs,
-    @Default([]) List<String> privateChatsCIDs,
+    @Default([]) List<Map<String, dynamic>> groupsGIDs,
+    @Default([]) List<Map<String, dynamic>> groupRequestsGIDs,
+    @Default([]) List<Map<String, dynamic>> groupInvitesGIDs,
+    @Default([]) List<Map<String, dynamic>> privateChatsCIDs,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

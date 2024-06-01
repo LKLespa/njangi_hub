@@ -31,8 +31,14 @@ mixin _$User {
   bool get isOnline => throw _privateConstructorUsedError;
   DateTime? get lastSeen => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  List<String> get groupsGIDs => throw _privateConstructorUsedError;
-  List<String> get privateChatsCIDs => throw _privateConstructorUsedError;
+  List<Map<String, dynamic>> get groupsGIDs =>
+      throw _privateConstructorUsedError;
+  List<Map<String, dynamic>> get groupRequestsGIDs =>
+      throw _privateConstructorUsedError;
+  List<Map<String, dynamic>> get groupInvitesGIDs =>
+      throw _privateConstructorUsedError;
+  List<Map<String, dynamic>> get privateChatsCIDs =>
+      throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -56,8 +62,10 @@ abstract class $UserCopyWith<$Res> {
       bool isOnline,
       DateTime? lastSeen,
       DateTime? createdAt,
-      List<String> groupsGIDs,
-      List<String> privateChatsCIDs});
+      List<Map<String, dynamic>> groupsGIDs,
+      List<Map<String, dynamic>> groupRequestsGIDs,
+      List<Map<String, dynamic>> groupInvitesGIDs,
+      List<Map<String, dynamic>> privateChatsCIDs});
 }
 
 /// @nodoc
@@ -85,6 +93,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? lastSeen = freezed,
     Object? createdAt = freezed,
     Object? groupsGIDs = null,
+    Object? groupRequestsGIDs = null,
+    Object? groupInvitesGIDs = null,
     Object? privateChatsCIDs = null,
   }) {
     return _then(_value.copyWith(
@@ -135,11 +145,19 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
       groupsGIDs: null == groupsGIDs
           ? _value.groupsGIDs
           : groupsGIDs // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Map<String, dynamic>>,
+      groupRequestsGIDs: null == groupRequestsGIDs
+          ? _value.groupRequestsGIDs
+          : groupRequestsGIDs // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
+      groupInvitesGIDs: null == groupInvitesGIDs
+          ? _value.groupInvitesGIDs
+          : groupInvitesGIDs // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
       privateChatsCIDs: null == privateChatsCIDs
           ? _value.privateChatsCIDs
           : privateChatsCIDs // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Map<String, dynamic>>,
     ) as $Val);
   }
 }
@@ -163,8 +181,10 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       bool isOnline,
       DateTime? lastSeen,
       DateTime? createdAt,
-      List<String> groupsGIDs,
-      List<String> privateChatsCIDs});
+      List<Map<String, dynamic>> groupsGIDs,
+      List<Map<String, dynamic>> groupRequestsGIDs,
+      List<Map<String, dynamic>> groupInvitesGIDs,
+      List<Map<String, dynamic>> privateChatsCIDs});
 }
 
 /// @nodoc
@@ -189,6 +209,8 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? lastSeen = freezed,
     Object? createdAt = freezed,
     Object? groupsGIDs = null,
+    Object? groupRequestsGIDs = null,
+    Object? groupInvitesGIDs = null,
     Object? privateChatsCIDs = null,
   }) {
     return _then(_$UserImpl(
@@ -239,11 +261,19 @@ class __$$UserImplCopyWithImpl<$Res>
       groupsGIDs: null == groupsGIDs
           ? _value._groupsGIDs
           : groupsGIDs // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Map<String, dynamic>>,
+      groupRequestsGIDs: null == groupRequestsGIDs
+          ? _value._groupRequestsGIDs
+          : groupRequestsGIDs // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
+      groupInvitesGIDs: null == groupInvitesGIDs
+          ? _value._groupInvitesGIDs
+          : groupInvitesGIDs // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>,
       privateChatsCIDs: null == privateChatsCIDs
           ? _value._privateChatsCIDs
           : privateChatsCIDs // ignore: cast_nullable_to_non_nullable
-              as List<String>,
+              as List<Map<String, dynamic>>,
     ));
   }
 }
@@ -263,9 +293,13 @@ class _$UserImpl extends _User {
       this.isOnline = false,
       this.lastSeen,
       this.createdAt,
-      final List<String> groupsGIDs = const [],
-      final List<String> privateChatsCIDs = const []})
+      final List<Map<String, dynamic>> groupsGIDs = const [],
+      final List<Map<String, dynamic>> groupRequestsGIDs = const [],
+      final List<Map<String, dynamic>> groupInvitesGIDs = const [],
+      final List<Map<String, dynamic>> privateChatsCIDs = const []})
       : _groupsGIDs = groupsGIDs,
+        _groupRequestsGIDs = groupRequestsGIDs,
+        _groupInvitesGIDs = groupInvitesGIDs,
         _privateChatsCIDs = privateChatsCIDs,
         super._();
 
@@ -296,19 +330,39 @@ class _$UserImpl extends _User {
   final DateTime? lastSeen;
   @override
   final DateTime? createdAt;
-  final List<String> _groupsGIDs;
+  final List<Map<String, dynamic>> _groupsGIDs;
   @override
   @JsonKey()
-  List<String> get groupsGIDs {
+  List<Map<String, dynamic>> get groupsGIDs {
     if (_groupsGIDs is EqualUnmodifiableListView) return _groupsGIDs;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_groupsGIDs);
   }
 
-  final List<String> _privateChatsCIDs;
+  final List<Map<String, dynamic>> _groupRequestsGIDs;
   @override
   @JsonKey()
-  List<String> get privateChatsCIDs {
+  List<Map<String, dynamic>> get groupRequestsGIDs {
+    if (_groupRequestsGIDs is EqualUnmodifiableListView)
+      return _groupRequestsGIDs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_groupRequestsGIDs);
+  }
+
+  final List<Map<String, dynamic>> _groupInvitesGIDs;
+  @override
+  @JsonKey()
+  List<Map<String, dynamic>> get groupInvitesGIDs {
+    if (_groupInvitesGIDs is EqualUnmodifiableListView)
+      return _groupInvitesGIDs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_groupInvitesGIDs);
+  }
+
+  final List<Map<String, dynamic>> _privateChatsCIDs;
+  @override
+  @JsonKey()
+  List<Map<String, dynamic>> get privateChatsCIDs {
     if (_privateChatsCIDs is EqualUnmodifiableListView)
       return _privateChatsCIDs;
     // ignore: implicit_dynamic_type
@@ -317,7 +371,7 @@ class _$UserImpl extends _User {
 
   @override
   String toString() {
-    return 'User(uid: $uid, token: $token, name: $name, username: $username, email: $email, phone: $phone, aboutMe: $aboutMe, photo: $photo, isOnline: $isOnline, lastSeen: $lastSeen, createdAt: $createdAt, groupsGIDs: $groupsGIDs, privateChatsCIDs: $privateChatsCIDs)';
+    return 'User(uid: $uid, token: $token, name: $name, username: $username, email: $email, phone: $phone, aboutMe: $aboutMe, photo: $photo, isOnline: $isOnline, lastSeen: $lastSeen, createdAt: $createdAt, groupsGIDs: $groupsGIDs, groupRequestsGIDs: $groupRequestsGIDs, groupInvitesGIDs: $groupInvitesGIDs, privateChatsCIDs: $privateChatsCIDs)';
   }
 
   @override
@@ -343,6 +397,10 @@ class _$UserImpl extends _User {
             const DeepCollectionEquality()
                 .equals(other._groupsGIDs, _groupsGIDs) &&
             const DeepCollectionEquality()
+                .equals(other._groupRequestsGIDs, _groupRequestsGIDs) &&
+            const DeepCollectionEquality()
+                .equals(other._groupInvitesGIDs, _groupInvitesGIDs) &&
+            const DeepCollectionEquality()
                 .equals(other._privateChatsCIDs, _privateChatsCIDs));
   }
 
@@ -362,6 +420,8 @@ class _$UserImpl extends _User {
       lastSeen,
       createdAt,
       const DeepCollectionEquality().hash(_groupsGIDs),
+      const DeepCollectionEquality().hash(_groupRequestsGIDs),
+      const DeepCollectionEquality().hash(_groupInvitesGIDs),
       const DeepCollectionEquality().hash(_privateChatsCIDs));
 
   @JsonKey(ignore: true)
@@ -391,8 +451,10 @@ abstract class _User extends User {
       final bool isOnline,
       final DateTime? lastSeen,
       final DateTime? createdAt,
-      final List<String> groupsGIDs,
-      final List<String> privateChatsCIDs}) = _$UserImpl;
+      final List<Map<String, dynamic>> groupsGIDs,
+      final List<Map<String, dynamic>> groupRequestsGIDs,
+      final List<Map<String, dynamic>> groupInvitesGIDs,
+      final List<Map<String, dynamic>> privateChatsCIDs}) = _$UserImpl;
   _User._() : super._();
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -420,9 +482,13 @@ abstract class _User extends User {
   @override
   DateTime? get createdAt;
   @override
-  List<String> get groupsGIDs;
+  List<Map<String, dynamic>> get groupsGIDs;
   @override
-  List<String> get privateChatsCIDs;
+  List<Map<String, dynamic>> get groupRequestsGIDs;
+  @override
+  List<Map<String, dynamic>> get groupInvitesGIDs;
+  @override
+  List<Map<String, dynamic>> get privateChatsCIDs;
   @override
   @JsonKey(ignore: true)
   _$$UserImplCopyWith<_$UserImpl> get copyWith =>

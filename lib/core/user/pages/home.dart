@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart';
-import 'package:njangi_hub/core/user/pages/all_users_page.dart';
+import 'package:njangi_hub/core/user/pages/all_user.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
 class MyHomePage extends HookConsumerWidget {
   final List<Widget> _widgetOptions = const <Widget>[
-    Text('Home'),
+    Text('Groups'),
     Text('Search'),
     Text('Profile'),
   ];
@@ -32,24 +32,19 @@ class MyHomePage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: Hero(
-          tag: TagNames.profilePhoto,
-          child: UserImageAvatar(
-            url: user.photo,
-            imageSource: FileSource.cachedNetwork,
-            onTap: () => Navigator.of(context).pushNamed(PageRoutes.settings),
-          ),
-        ),
         title: Text('NjangiHub',
             style: TextStyle(color: Theme.of(context).primaryColor)),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: () {},
-            iconSize: 30,
-            icon: const Icon(Icons.search),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+          Hero(
+            tag: TagNames.profilePhoto,
+            child: UserImageAvatar(
+              url: user.photo,
+              imageSource: FileSource.cachedNetwork,
+              onTap: () => Navigator.of(context).pushNamed(PageRoutes.settings),
+            ),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
         ],
       ),
       body: const AllUsersPage(),

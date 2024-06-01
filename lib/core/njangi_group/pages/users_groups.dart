@@ -7,31 +7,29 @@ import 'package:njangi_hub/shared/shared.dart';
 import 'package:njangi_hub/shared/widgets/error_widget.dart' as err;
 import 'package:skeletonizer/skeletonizer.dart';
 
-class AllUsersPage extends StatefulHookConsumerWidget {
-  const AllUsersPage({super.key});
+class UsersGroups extends StatefulHookConsumerWidget {
+  const UsersGroups({super.key});
 
   @override
-  ConsumerState<AllUsersPage> createState() => _AllUsersPageState();
+  ConsumerState<UsersGroups> createState() => _AllUsersPageState();
 }
 
-class _AllUsersPageState extends ConsumerState<AllUsersPage> {
-  late Stream<QuerySnapshot> _usersStream;
+class _AllUsersPageState extends ConsumerState<UsersGroups> {
+  late Stream<QuerySnapshot> _usersGroupsStream;
 
   @override
   void initState() {
     super.initState();
     final firebaseUser = firebase.FirebaseAuth.instance.currentUser;
-    final collectionRef = FirebaseFirestore.instance.collection("users");
-    _usersStream = firebaseUser != null
-        ? collectionRef.where("uid", isNotEqualTo: firebaseUser.uid).snapshots()
-        : collectionRef.snapshots();
+    final groupIDs = ref.read(authNotifierProvider).user?.groupsGIDs;
+    _usersGroupsStream = FirebaseFirestore.instance.collection("groups").where("members", arrayContains: {"uid": firebaseUser?.uid}).snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authNotifierProvider);
     return StreamBuilder<QuerySnapshot>(
-      stream: _usersStream,
+      stream: _usersGroupsStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return err.ErrorWidget(
@@ -56,11 +54,11 @@ class _AllUsersPageState extends ConsumerState<AllUsersPage> {
               final user = users[index];
               return ListTile(
                 title: Text(user.name!),
-                subtitle: Text("@${user.username!}\n${user.phone!}\n"),
+                subtitle: Text("@${user.username!}"),
                 trailing: auth.user!.isOnline
                     ? Text(user.isOnline ? "Online" : "Offline",
-                        style: TextStyle(
-                            color: user.isOnline ? Colors.green : Colors.grey))
+                    style: TextStyle(
+                        color: user.isOnline ? Colors.green : Colors.grey))
                     : null,
                 leading: Hero(
                   tag: user.uid,
@@ -69,7 +67,7 @@ class _AllUsersPageState extends ConsumerState<AllUsersPage> {
                     url: user.photo,
                   ),
                 ),
-                onTap: () => Navigator.of(context).pushNamed(PageRoutes.usersProfile, arguments: user.uid),
+                onTap: () => Navigator.of(context).pushNamed(PageRoutes.usersProfile, arguments: user),
               );
             },
           ),
