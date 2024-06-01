@@ -114,9 +114,7 @@ class OtpPage extends HookConsumerWidget {
                         const Gap(10),
                         ElevatedButton(
                             onPressed: () {
-                              if(formKey.currentState!.validate()){
                                 ref.watch(authNotifierProvider.notifier).signInWithPhoneNumber(phoneNumber: authState.tempUser!.phone ?? "", context: context, shouldResendToken: true);
-                              }
                             },
                             child: Text("Resend Code",
                                 style: Theme.of(context)

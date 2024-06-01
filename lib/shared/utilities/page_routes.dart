@@ -12,4 +12,6 @@ class PageRoutes {
   static const otpVerify = 'otp-verify';
   static const userInformation = '/user-information';
   static const error = '/error';
+  static const theme = '/theme';
+  static const usersProfile = "/usersProfile";
 }

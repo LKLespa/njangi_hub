@@ -38,7 +38,7 @@ dependencies:
   # cupertino_icons: ^1.0.6
   country_picker: ^2.0.25
   # lottie: ^3.1.0
-  # google_fonts: ^6.2.1
+  google_fonts: ^6.2.1
   # hive: ^2.2.3
   pinput: ^4.0.0
   # uuid: ^4.4.0

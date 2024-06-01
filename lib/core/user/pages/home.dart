@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:njangi_hub/core/authentication/authentication.dart';
+import 'package:njangi_hub/core/user/pages/all_users_page.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
 class MyHomePage extends HookConsumerWidget {
@@ -31,11 +32,16 @@ class MyHomePage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: UserImageAvatar(url: user.photo, imageSource: FileSource.cachedNetwork, onTap: () => Navigator.of(context).pushNamed(PageRoutes.profile),),
+        leading: Hero(
+          tag: TagNames.profilePhoto,
+          child: UserImageAvatar(
+            url: user.photo,
+            imageSource: FileSource.cachedNetwork,
+            onTap: () => Navigator.of(context).pushNamed(PageRoutes.settings),
+          ),
+        ),
         title: Text('NjangiHub',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).primaryColor)),
+            style: TextStyle(color: Theme.of(context).primaryColor)),
         centerTitle: true,
         actions: [
           IconButton(
@@ -46,9 +52,7 @@ class MyHomePage extends HookConsumerWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.menu))
         ],
       ),
-      body: Center(
-        child: UserImageAvatar(url: user.photo, imageSource: FileSource.cachedNetwork, onTap: () => Navigator.of(context).pushNamed(PageRoutes.profile),),
-      ),
+      body: const AllUsersPage(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -67,31 +71,6 @@ class MyHomePage extends HookConsumerWidget {
         currentIndex: selectedIndex.value,
         selectedItemColor: Theme.of(context).primaryColor,
         onTap: (index) => selectedIndex.value = index,
-      ),
-    );
-  }
-}
-
-class UserImageAvatar extends StatelessWidget {
-  const UserImageAvatar(
-      {super.key, this.url, this.onTap, this.radius = 25, required this.imageSource});
-
-  final String? url;
-  final void Function()? onTap;
-  final double radius;
-  final FileSource imageSource;
-
-  @override
-  Widget build(BuildContext context) {
-    final imageProvider = getImageProviderFromSource(path: url, source: imageSource, placeholder: Assets.imagesUser);
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(30),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: CircleAvatar(
-          backgroundImage: imageProvider,
-        )
       ),
     );
   }

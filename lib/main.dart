@@ -88,6 +88,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     internetConnectionListener = listenToInternetChanges();
+    internetConnectionListener.onData((data) {
+      final isConnected = data == InternetStatus.connected;
+      ref.read(authNotifierProvider.notifier).updateOnlineStatus(isOnline: isConnected);
+    });
     final authState = ref.read(authNotifierProvider);
     final authStateNotifier = ref.read(authNotifierProvider.notifier);
     Future.delayed(Duration.zero, () async {
@@ -134,25 +138,12 @@ class _MyAppState extends ConsumerState<MyApp> {
           darkTheme: darkTheme,
           themeMode: getThemeMode(),
           initialRoute: widget.initialRoute,
-          routes: _routes,
+          routes: routes,
         ),
       ),
     );
   }
 }
-
-//695747281
-final _routes = {
-  PageRoutes.splash: (context) => const SplashScreen(),
-  PageRoutes.home: (context) => const MyHomePage(),
-  PageRoutes.intro: (context) => const IntroScreen(),
-  PageRoutes.login: (context) => LoginWithPhoneNumberPage(),
-  PageRoutes.otpVerify: (context) => OtpPage(),
-  PageRoutes.userInformation: (context) => UserInformationRegistrationPage(),
-  PageRoutes.enterEmail: (context) => EmailVerificationPage(),
-  PageRoutes.settings: (context) => const SettingsPage(),
-  PageRoutes.profile: (context) => const ProfilePage(),
-};
 
 // Platform  Firebase App Id
 // web       1:35923112741:web:a3d838997b5e3ee646e0cc

@@ -237,7 +237,6 @@ class AuthNotifier extends _$AuthNotifier {
             }
             print("UPDATING USER");
 
-
           });
         }
       }
@@ -247,5 +246,16 @@ class AuthNotifier extends _$AuthNotifier {
       _authChangesListener.resume();
       state = state.copyWith(isLoading: false);
     }
+  }
+
+  Future<void> updateOnlineStatus({required bool isOnline}) async{
+    final user = state.user;
+    if(user == null){
+      return;
+    }
+    state = state.copyWith.user!.call(isOnline: isOnline);
+    final docRef = _db.collection("users").doc(user.uid);
+    await docRef.update({"isOnline": isOnline});
+    return;
   }
 }

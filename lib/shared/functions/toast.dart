@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:toastification/toastification.dart';
 
-void toast({ String? title, required String message, required ToastificationType type}) {
+void toast(
+    {String? title,
+    required String message,
+    required ToastificationType type,
+    int time = 5,
+    Alignment alignment = Alignment.topCenter}) {
   final msg = message.length > 75 ? "${message.substring(0, 75)}..." : message;
   Icon? icon;
   switch (type) {
@@ -23,9 +28,9 @@ void toast({ String? title, required String message, required ToastificationType
   toastification.show(
     title: title != null ? Text(title) : null,
     description: Text(msg),
-    alignment: Alignment.topCenter,
+    alignment: alignment,
     animationDuration: const Duration(milliseconds: 300),
-    autoCloseDuration: const Duration(seconds: 7),
+    autoCloseDuration: Duration(seconds: time),
     type: type,
     icon: icon,
     style: ToastificationStyle.fillColored,

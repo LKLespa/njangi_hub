@@ -28,10 +28,10 @@ StreamSubscription<InternetStatus> listenToInternetChanges({bool showChanges = t
       switch (status) {
         case InternetStatus.connected:
           if(listenCount > 2) {
-            toast(message: "Back online", type: ToastificationType.success);
+            toast(message: "Back online", type: ToastificationType.success, time: 2);
           }
         case InternetStatus.disconnected:
-          toast(message: "Your offline", type: ToastificationType.warning);
+          toast(message: "Your offline", type: ToastificationType.warning, time: 2);
       }
     }
   });
