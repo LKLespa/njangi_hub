@@ -10,6 +10,7 @@ sealed class NjangiGroup extends Group with _$NjangiGroup {
   const factory NjangiGroup({
     required String gid,
     required String name,
+    String? photo,
     String? description,
     DateTime? dateCreated,
     @Default([]) List<String> groupAdmins,

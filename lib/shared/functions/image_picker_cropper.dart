@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:njangi_hub/shared/functions/toast.dart';
 import 'package:toastification/toastification.dart';
@@ -45,4 +47,58 @@ Future<File?> getLostImage() async {
     return File(file.path);
   }
   return null;
+}
+
+Future<String?> selectImage({required BuildContext context}) async {
+  File? fileImage;
+  String? imagePath;
+  Future<void> onSelect(bool camera) async {
+    fileImage = await pickImage(fromCamera: camera);
+    if (fileImage != null) {
+      // TODO: Crop the image
+      imagePath = fileImage!.path;
+      // }
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  if (context.mounted) {
+    await showModalBottomSheet(
+      context: context,
+      builder: (_) => Container(
+        width: double.maxFinite,
+        height: 200,
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Card(
+              child: ListTile(
+                leading: const Icon(
+                  Icons.camera,
+                  size: 20,
+                ),
+                title: const Text('From Camera'),
+                onTap: () => onSelect(true),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(
+                  Icons.image,
+                  size: 20,
+                ),
+                title: const Text('From Gallery'),
+                onTap: () => onSelect(false),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  return imagePath;
 }

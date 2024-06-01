@@ -14,4 +14,5 @@ class PageRoutes {
   static const error = '/error';
   static const theme = '/theme';
   static const usersProfile = "/usersProfile";
+  static const createGroup = '/createGroup';
 }

@@ -10,6 +10,7 @@ _$NjangiGroupImpl _$$NjangiGroupImplFromJson(Map<String, dynamic> json) =>
     _$NjangiGroupImpl(
       gid: json['gid'] as String,
       name: json['name'] as String,
+      photo: json['photo'] as String?,
       description: json['description'] as String?,
       dateCreated: json['dateCreated'] == null
           ? null
@@ -49,6 +50,7 @@ Map<String, dynamic> _$$NjangiGroupImplToJson(_$NjangiGroupImpl instance) =>
     <String, dynamic>{
       'gid': instance.gid,
       'name': instance.name,
+      'photo': instance.photo,
       'description': instance.description,
       'dateCreated': instance.dateCreated?.toIso8601String(),
       'groupAdmins': instance.groupAdmins,

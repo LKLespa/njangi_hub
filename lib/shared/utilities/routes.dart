@@ -1,4 +1,5 @@
 import 'package:njangi_hub/core/authentication/authentication.dart';
+import 'package:njangi_hub/core/njangi_group/njangi_groups.dart';
 import 'package:njangi_hub/core/user/user.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
@@ -14,4 +15,5 @@ final routes = {
   PageRoutes.profile: (context) => const ProfilePage(),
   PageRoutes.theme: (context) => const ThemePage(),
   PageRoutes.usersProfile: (context) => const UserProfilePage(),
+  PageRoutes.createGroup: (context) => CreateGroupPage(),
 };

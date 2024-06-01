@@ -1,4 +1,3 @@
-import 'package:njangi_hub/core/njangi_group/models/njangi_group.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
 abstract class Group {
@@ -12,9 +11,10 @@ abstract class Group {
       this.groupInvites,
       this.groupRequests,
       this.groupChat,
-      this.paymentAccount);
+      this.paymentAccount, this.photo);
   final String gid;
   final String name;
+  final String? photo;
   final String? description;
   final DateTime? dateCreated;
   final List<String> groupAdmins;

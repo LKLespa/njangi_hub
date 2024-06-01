@@ -20,56 +20,56 @@ class UserInformationRegistrationPage extends HookConsumerWidget {
     final userName = useState('');
     final ValueNotifier<String?> userNameError = useState(null);
 
-    Future<void> selectImage() async {
-      File? fileImage;
-      Future<void> onSelect(bool camera) async {
-        fileImage = await pickImage(fromCamera: camera);
-        if (fileImage != null) {
-          // TODO: Crop the image
-          userImage.value = fileImage!.path;
-          // }
-          if (context.mounted) {
-            Navigator.of(context).pop();
-          }
-        }
-      }
-
-      if (context.mounted) {
-        await showModalBottomSheet(
-          context: context,
-          builder: (_) => Container(
-            width: double.maxFinite,
-            height: 200,
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Card(
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.camera,
-                      size: 20,
-                    ),
-                    title: const Text('From Camera'),
-                    onTap: () => onSelect(true),
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    leading: const Icon(
-                      Icons.image,
-                      size: 20,
-                    ),
-                    title: const Text('From Gallery'),
-                    onTap: () => onSelect(false),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-    }
+    // Future<void> selectImage() async {
+    //   File? fileImage;
+    //   Future<void> onSelect(bool camera) async {
+    //     fileImage = await pickImage(fromCamera: camera);
+    //     if (fileImage != null) {
+    //       // TODO: Crop the image
+    //       userImage.value = fileImage!.path;
+    //       // }
+    //       if (context.mounted) {
+    //         Navigator.of(context).pop();
+    //       }
+    //     }
+    //   }
+    //
+    //   if (context.mounted) {
+    //     await showModalBottomSheet(
+    //       context: context,
+    //       builder: (_) => Container(
+    //         width: double.maxFinite,
+    //         height: 200,
+    //         padding: const EdgeInsets.all(15),
+    //         child: Column(
+    //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //           children: [
+    //             Card(
+    //               child: ListTile(
+    //                 leading: const Icon(
+    //                   Icons.camera,
+    //                   size: 20,
+    //                 ),
+    //                 title: const Text('From Camera'),
+    //                 onTap: () => onSelect(true),
+    //               ),
+    //             ),
+    //             Card(
+    //               child: ListTile(
+    //                 leading: const Icon(
+    //                   Icons.image,
+    //                   size: 20,
+    //                 ),
+    //                 title: const Text('From Gallery'),
+    //                 onTap: () => onSelect(false),
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //     );
+    //   }
+    // }
 
     Future<void> getLostPickedImage() async {
       final lostImageFile = await getLostImage();
@@ -118,7 +118,9 @@ class UserInformationRegistrationPage extends HookConsumerWidget {
                               backgroundColor: Colors.green,
                               child: IconButton(
                                 icon: const Icon(Icons.camera_alt),
-                                onPressed: () => selectImage(),
+                                onPressed: () async {
+                                   userImage.value = (await selectImage(context: context)) ?? "";
+                                },
                               ),
                             ),
                           )

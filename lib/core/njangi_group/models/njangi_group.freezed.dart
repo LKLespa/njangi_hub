@@ -22,6 +22,7 @@ NjangiGroup _$NjangiGroupFromJson(Map<String, dynamic> json) {
 mixin _$NjangiGroup {
   String get gid => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  String? get photo => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   DateTime? get dateCreated => throw _privateConstructorUsedError;
   List<String> get groupAdmins => throw _privateConstructorUsedError;
@@ -53,6 +54,7 @@ abstract class $NjangiGroupCopyWith<$Res> {
   $Res call(
       {String gid,
       String name,
+      String? photo,
       String? description,
       DateTime? dateCreated,
       List<String> groupAdmins,
@@ -85,6 +87,7 @@ class _$NjangiGroupCopyWithImpl<$Res, $Val extends NjangiGroup>
   $Res call({
     Object? gid = null,
     Object? name = null,
+    Object? photo = freezed,
     Object? description = freezed,
     Object? dateCreated = freezed,
     Object? groupAdmins = null,
@@ -106,6 +109,10 @@ class _$NjangiGroupCopyWithImpl<$Res, $Val extends NjangiGroup>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -193,6 +200,7 @@ abstract class _$$NjangiGroupImplCopyWith<$Res>
   $Res call(
       {String gid,
       String name,
+      String? photo,
       String? description,
       DateTime? dateCreated,
       List<String> groupAdmins,
@@ -226,6 +234,7 @@ class __$$NjangiGroupImplCopyWithImpl<$Res>
   $Res call({
     Object? gid = null,
     Object? name = null,
+    Object? photo = freezed,
     Object? description = freezed,
     Object? dateCreated = freezed,
     Object? groupAdmins = null,
@@ -247,6 +256,10 @@ class __$$NjangiGroupImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      photo: freezed == photo
+          ? _value.photo
+          : photo // ignore: cast_nullable_to_non_nullable
+              as String?,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -301,6 +314,7 @@ class _$NjangiGroupImpl implements _NjangiGroup {
   const _$NjangiGroupImpl(
       {required this.gid,
       required this.name,
+      this.photo,
       this.description,
       this.dateCreated,
       final List<String> groupAdmins = const [],
@@ -325,6 +339,8 @@ class _$NjangiGroupImpl implements _NjangiGroup {
   final String gid;
   @override
   final String name;
+  @override
+  final String? photo;
   @override
   final String? description;
   @override
@@ -385,7 +401,7 @@ class _$NjangiGroupImpl implements _NjangiGroup {
 
   @override
   String toString() {
-    return 'NjangiGroup(gid: $gid, name: $name, description: $description, dateCreated: $dateCreated, groupAdmins: $groupAdmins, groupMembers: $groupMembers, groupInvites: $groupInvites, groupRequests: $groupRequests, currentAmount: $currentAmount, paymentAccount: $paymentAccount, groupChat: $groupChat, groupSettings: $groupSettings, groupCircles: $groupCircles)';
+    return 'NjangiGroup(gid: $gid, name: $name, photo: $photo, description: $description, dateCreated: $dateCreated, groupAdmins: $groupAdmins, groupMembers: $groupMembers, groupInvites: $groupInvites, groupRequests: $groupRequests, currentAmount: $currentAmount, paymentAccount: $paymentAccount, groupChat: $groupChat, groupSettings: $groupSettings, groupCircles: $groupCircles)';
   }
 
   @override
@@ -395,6 +411,7 @@ class _$NjangiGroupImpl implements _NjangiGroup {
             other is _$NjangiGroupImpl &&
             (identical(other.gid, gid) || other.gid == gid) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.photo, photo) || other.photo == photo) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.dateCreated, dateCreated) ||
@@ -425,6 +442,7 @@ class _$NjangiGroupImpl implements _NjangiGroup {
       runtimeType,
       gid,
       name,
+      photo,
       description,
       dateCreated,
       const DeepCollectionEquality().hash(_groupAdmins),
@@ -455,6 +473,7 @@ abstract class _NjangiGroup implements NjangiGroup {
   const factory _NjangiGroup(
       {required final String gid,
       required final String name,
+      final String? photo,
       final String? description,
       final DateTime? dateCreated,
       final List<String> groupAdmins,
@@ -474,6 +493,8 @@ abstract class _NjangiGroup implements NjangiGroup {
   String get gid;
   @override
   String get name;
+  @override
+  String? get photo;
   @override
   String? get description;
   @override

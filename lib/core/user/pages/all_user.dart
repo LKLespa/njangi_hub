@@ -23,7 +23,10 @@ class _AllUsersPageState extends ConsumerState<AllUsersPage> {
     final firebaseUser = firebase.FirebaseAuth.instance.currentUser;
     final collectionRef = FirebaseFirestore.instance.collection("users");
     _usersStream = firebaseUser != null
-        ? collectionRef.where("uid", isNotEqualTo: firebaseUser.uid).snapshots()
+        ? collectionRef
+            .where("uid", isNotEqualTo: firebaseUser.uid)
+            .orderBy('createdAt')
+            .snapshots()
         : collectionRef.snapshots();
   }
 
@@ -69,7 +72,8 @@ class _AllUsersPageState extends ConsumerState<AllUsersPage> {
                     url: user.photo,
                   ),
                 ),
-                onTap: () => Navigator.of(context).pushNamed(PageRoutes.usersProfile, arguments: user),
+                onTap: () => Navigator.of(context)
+                    .pushNamed(PageRoutes.usersProfile, arguments: user),
               );
             },
           ),

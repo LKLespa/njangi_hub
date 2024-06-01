@@ -27,5 +27,6 @@ export './models/group.dart';
 export './models/group_chat.dart';
 export './models/file_sources.dart';
 export './models/payment_account.dart';
+export './models/group_member_status.dart';
 
 export './extentions/date_extentions.dart';

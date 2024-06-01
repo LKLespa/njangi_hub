@@ -23,5 +23,13 @@ ThemeData lightTheme = ThemeData(
     endIndent: 20,
     color: Colors.grey.withOpacity(0.7),
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: bodyTextFont,
+    hintStyle: bodyTextFont,
+    suffixStyle: bodyTextFont,
+    helperStyle: captionFont,
+    counterStyle: captionFont,
+    errorStyle: captionFont.copyWith(color: Colors.red)
+  ),
   useMaterial3: true,
 );
