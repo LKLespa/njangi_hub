@@ -20,15 +20,15 @@ _$NjangiGroupImpl _$$NjangiGroupImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       groupMembers: (json['groupMembers'] as List<dynamic>?)
-              ?.map((e) => e as Map<String, dynamic>)
+              ?.map((e) => e as String)
               .toList() ??
           const [],
       groupInvites: (json['groupInvites'] as List<dynamic>?)
-              ?.map((e) => e as Map<String, dynamic>)
+              ?.map((e) => e as String)
               .toList() ??
           const [],
       groupRequests: (json['groupRequests'] as List<dynamic>?)
-              ?.map((e) => e as Map<String, dynamic>)
+              ?.map((e) => e as String)
               .toList() ??
           const [],
       currentAmount: (json['currentAmount'] as num?)?.toDouble() ?? 0,
@@ -36,9 +36,13 @@ _$NjangiGroupImpl _$$NjangiGroupImplFromJson(Map<String, dynamic> json) =>
           ? null
           : PaymentAccount.fromJson(
               json['paymentAccount'] as Map<String, dynamic>),
-      groupChat: GroupChat.fromJson(json['groupChat'] as Map<String, dynamic>),
-      groupSettings: NjangiGroupSettings.fromJson(
-          json['groupSettings'] as Map<String, dynamic>),
+      groupChat: json['groupChat'] == null
+          ? null
+          : GroupChat.fromJson(json['groupChat'] as Map<String, dynamic>),
+      groupSettings: json['groupSettings'] == null
+          ? null
+          : NjangiGroupSettings.fromJson(
+              json['groupSettings'] as Map<String, dynamic>),
       groupCircles: (json['groupCircles'] as List<dynamic>?)
               ?.map(
                   (e) => NjangiGroupCircle.fromJson(e as Map<String, dynamic>))

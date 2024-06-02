@@ -14,13 +14,13 @@ sealed class NjangiGroup extends Group with _$NjangiGroup {
     String? description,
     DateTime? dateCreated,
     @Default([]) List<String> groupAdmins,
-    @Default([]) List<Map<String, dynamic>> groupMembers,
-    @Default([]) List<Map<String, dynamic>> groupInvites,
-    @Default([]) List<Map<String, dynamic>> groupRequests,
+    @Default([]) List<String> groupMembers,
+    @Default([]) List<String> groupInvites,
+    @Default([]) List<String> groupRequests,
     @Default(0) double currentAmount,
     PaymentAccount? paymentAccount,
-    required GroupChat groupChat,
-    required NjangiGroupSettings groupSettings,
+    GroupChat? groupChat,
+    NjangiGroupSettings? groupSettings,
     @Default([]) List<NjangiGroupCircle> groupCircles,
   }) = _NjangiGroup;
 

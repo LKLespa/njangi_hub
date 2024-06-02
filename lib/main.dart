@@ -23,6 +23,7 @@ void main() async {
       persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   final auth = firebase_auth.FirebaseAuth.instance;
   final user = auth.currentUser;
+  print(auth.currentUser != null ? "User exists" : "User is not");
   String initialRoute = PageRoutes.splash;
   User? njangiUser;
   bool userIsRegistered = false;

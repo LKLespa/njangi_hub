@@ -18,9 +18,9 @@ abstract class Group {
   final String? description;
   final DateTime? dateCreated;
   final List<String> groupAdmins;
-  final List<Map<String, dynamic>> groupMembers;
-  final List<Map<String, dynamic>> groupInvites;
-  final List<Map<String, dynamic>> groupRequests;
+  final List<String> groupMembers;
+  final List<String> groupInvites;
+  final List<String> groupRequests;
   final PaymentAccount? paymentAccount;
-  final GroupChat groupChat;
+  final GroupChat? groupChat;
 }

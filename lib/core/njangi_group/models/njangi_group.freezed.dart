@@ -26,16 +26,13 @@ mixin _$NjangiGroup {
   String? get description => throw _privateConstructorUsedError;
   DateTime? get dateCreated => throw _privateConstructorUsedError;
   List<String> get groupAdmins => throw _privateConstructorUsedError;
-  List<Map<String, dynamic>> get groupMembers =>
-      throw _privateConstructorUsedError;
-  List<Map<String, dynamic>> get groupInvites =>
-      throw _privateConstructorUsedError;
-  List<Map<String, dynamic>> get groupRequests =>
-      throw _privateConstructorUsedError;
+  List<String> get groupMembers => throw _privateConstructorUsedError;
+  List<String> get groupInvites => throw _privateConstructorUsedError;
+  List<String> get groupRequests => throw _privateConstructorUsedError;
   double get currentAmount => throw _privateConstructorUsedError;
   PaymentAccount? get paymentAccount => throw _privateConstructorUsedError;
-  GroupChat get groupChat => throw _privateConstructorUsedError;
-  NjangiGroupSettings get groupSettings => throw _privateConstructorUsedError;
+  GroupChat? get groupChat => throw _privateConstructorUsedError;
+  NjangiGroupSettings? get groupSettings => throw _privateConstructorUsedError;
   List<NjangiGroupCircle> get groupCircles =>
       throw _privateConstructorUsedError;
 
@@ -58,18 +55,18 @@ abstract class $NjangiGroupCopyWith<$Res> {
       String? description,
       DateTime? dateCreated,
       List<String> groupAdmins,
-      List<Map<String, dynamic>> groupMembers,
-      List<Map<String, dynamic>> groupInvites,
-      List<Map<String, dynamic>> groupRequests,
+      List<String> groupMembers,
+      List<String> groupInvites,
+      List<String> groupRequests,
       double currentAmount,
       PaymentAccount? paymentAccount,
-      GroupChat groupChat,
-      NjangiGroupSettings groupSettings,
+      GroupChat? groupChat,
+      NjangiGroupSettings? groupSettings,
       List<NjangiGroupCircle> groupCircles});
 
   $PaymentAccountCopyWith<$Res>? get paymentAccount;
-  $GroupChatCopyWith<$Res> get groupChat;
-  $NjangiGroupSettingsCopyWith<$Res> get groupSettings;
+  $GroupChatCopyWith<$Res>? get groupChat;
+  $NjangiGroupSettingsCopyWith<$Res>? get groupSettings;
 }
 
 /// @nodoc
@@ -96,8 +93,8 @@ class _$NjangiGroupCopyWithImpl<$Res, $Val extends NjangiGroup>
     Object? groupRequests = null,
     Object? currentAmount = null,
     Object? paymentAccount = freezed,
-    Object? groupChat = null,
-    Object? groupSettings = null,
+    Object? groupChat = freezed,
+    Object? groupSettings = freezed,
     Object? groupCircles = null,
   }) {
     return _then(_value.copyWith(
@@ -128,15 +125,15 @@ class _$NjangiGroupCopyWithImpl<$Res, $Val extends NjangiGroup>
       groupMembers: null == groupMembers
           ? _value.groupMembers
           : groupMembers // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<String>,
       groupInvites: null == groupInvites
           ? _value.groupInvites
           : groupInvites // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<String>,
       groupRequests: null == groupRequests
           ? _value.groupRequests
           : groupRequests // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<String>,
       currentAmount: null == currentAmount
           ? _value.currentAmount
           : currentAmount // ignore: cast_nullable_to_non_nullable
@@ -145,14 +142,14 @@ class _$NjangiGroupCopyWithImpl<$Res, $Val extends NjangiGroup>
           ? _value.paymentAccount
           : paymentAccount // ignore: cast_nullable_to_non_nullable
               as PaymentAccount?,
-      groupChat: null == groupChat
+      groupChat: freezed == groupChat
           ? _value.groupChat
           : groupChat // ignore: cast_nullable_to_non_nullable
-              as GroupChat,
-      groupSettings: null == groupSettings
+              as GroupChat?,
+      groupSettings: freezed == groupSettings
           ? _value.groupSettings
           : groupSettings // ignore: cast_nullable_to_non_nullable
-              as NjangiGroupSettings,
+              as NjangiGroupSettings?,
       groupCircles: null == groupCircles
           ? _value.groupCircles
           : groupCircles // ignore: cast_nullable_to_non_nullable
@@ -174,16 +171,24 @@ class _$NjangiGroupCopyWithImpl<$Res, $Val extends NjangiGroup>
 
   @override
   @pragma('vm:prefer-inline')
-  $GroupChatCopyWith<$Res> get groupChat {
-    return $GroupChatCopyWith<$Res>(_value.groupChat, (value) {
+  $GroupChatCopyWith<$Res>? get groupChat {
+    if (_value.groupChat == null) {
+      return null;
+    }
+
+    return $GroupChatCopyWith<$Res>(_value.groupChat!, (value) {
       return _then(_value.copyWith(groupChat: value) as $Val);
     });
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $NjangiGroupSettingsCopyWith<$Res> get groupSettings {
-    return $NjangiGroupSettingsCopyWith<$Res>(_value.groupSettings, (value) {
+  $NjangiGroupSettingsCopyWith<$Res>? get groupSettings {
+    if (_value.groupSettings == null) {
+      return null;
+    }
+
+    return $NjangiGroupSettingsCopyWith<$Res>(_value.groupSettings!, (value) {
       return _then(_value.copyWith(groupSettings: value) as $Val);
     });
   }
@@ -204,21 +209,21 @@ abstract class _$$NjangiGroupImplCopyWith<$Res>
       String? description,
       DateTime? dateCreated,
       List<String> groupAdmins,
-      List<Map<String, dynamic>> groupMembers,
-      List<Map<String, dynamic>> groupInvites,
-      List<Map<String, dynamic>> groupRequests,
+      List<String> groupMembers,
+      List<String> groupInvites,
+      List<String> groupRequests,
       double currentAmount,
       PaymentAccount? paymentAccount,
-      GroupChat groupChat,
-      NjangiGroupSettings groupSettings,
+      GroupChat? groupChat,
+      NjangiGroupSettings? groupSettings,
       List<NjangiGroupCircle> groupCircles});
 
   @override
   $PaymentAccountCopyWith<$Res>? get paymentAccount;
   @override
-  $GroupChatCopyWith<$Res> get groupChat;
+  $GroupChatCopyWith<$Res>? get groupChat;
   @override
-  $NjangiGroupSettingsCopyWith<$Res> get groupSettings;
+  $NjangiGroupSettingsCopyWith<$Res>? get groupSettings;
 }
 
 /// @nodoc
@@ -243,8 +248,8 @@ class __$$NjangiGroupImplCopyWithImpl<$Res>
     Object? groupRequests = null,
     Object? currentAmount = null,
     Object? paymentAccount = freezed,
-    Object? groupChat = null,
-    Object? groupSettings = null,
+    Object? groupChat = freezed,
+    Object? groupSettings = freezed,
     Object? groupCircles = null,
   }) {
     return _then(_$NjangiGroupImpl(
@@ -275,15 +280,15 @@ class __$$NjangiGroupImplCopyWithImpl<$Res>
       groupMembers: null == groupMembers
           ? _value._groupMembers
           : groupMembers // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<String>,
       groupInvites: null == groupInvites
           ? _value._groupInvites
           : groupInvites // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<String>,
       groupRequests: null == groupRequests
           ? _value._groupRequests
           : groupRequests // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<String>,
       currentAmount: null == currentAmount
           ? _value.currentAmount
           : currentAmount // ignore: cast_nullable_to_non_nullable
@@ -292,14 +297,14 @@ class __$$NjangiGroupImplCopyWithImpl<$Res>
           ? _value.paymentAccount
           : paymentAccount // ignore: cast_nullable_to_non_nullable
               as PaymentAccount?,
-      groupChat: null == groupChat
+      groupChat: freezed == groupChat
           ? _value.groupChat
           : groupChat // ignore: cast_nullable_to_non_nullable
-              as GroupChat,
-      groupSettings: null == groupSettings
+              as GroupChat?,
+      groupSettings: freezed == groupSettings
           ? _value.groupSettings
           : groupSettings // ignore: cast_nullable_to_non_nullable
-              as NjangiGroupSettings,
+              as NjangiGroupSettings?,
       groupCircles: null == groupCircles
           ? _value._groupCircles
           : groupCircles // ignore: cast_nullable_to_non_nullable
@@ -318,13 +323,13 @@ class _$NjangiGroupImpl implements _NjangiGroup {
       this.description,
       this.dateCreated,
       final List<String> groupAdmins = const [],
-      final List<Map<String, dynamic>> groupMembers = const [],
-      final List<Map<String, dynamic>> groupInvites = const [],
-      final List<Map<String, dynamic>> groupRequests = const [],
+      final List<String> groupMembers = const [],
+      final List<String> groupInvites = const [],
+      final List<String> groupRequests = const [],
       this.currentAmount = 0,
       this.paymentAccount,
-      required this.groupChat,
-      required this.groupSettings,
+      this.groupChat,
+      this.groupSettings,
       final List<NjangiGroupCircle> groupCircles = const []})
       : _groupAdmins = groupAdmins,
         _groupMembers = groupMembers,
@@ -354,28 +359,28 @@ class _$NjangiGroupImpl implements _NjangiGroup {
     return EqualUnmodifiableListView(_groupAdmins);
   }
 
-  final List<Map<String, dynamic>> _groupMembers;
+  final List<String> _groupMembers;
   @override
   @JsonKey()
-  List<Map<String, dynamic>> get groupMembers {
+  List<String> get groupMembers {
     if (_groupMembers is EqualUnmodifiableListView) return _groupMembers;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_groupMembers);
   }
 
-  final List<Map<String, dynamic>> _groupInvites;
+  final List<String> _groupInvites;
   @override
   @JsonKey()
-  List<Map<String, dynamic>> get groupInvites {
+  List<String> get groupInvites {
     if (_groupInvites is EqualUnmodifiableListView) return _groupInvites;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_groupInvites);
   }
 
-  final List<Map<String, dynamic>> _groupRequests;
+  final List<String> _groupRequests;
   @override
   @JsonKey()
-  List<Map<String, dynamic>> get groupRequests {
+  List<String> get groupRequests {
     if (_groupRequests is EqualUnmodifiableListView) return _groupRequests;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_groupRequests);
@@ -387,9 +392,9 @@ class _$NjangiGroupImpl implements _NjangiGroup {
   @override
   final PaymentAccount? paymentAccount;
   @override
-  final GroupChat groupChat;
+  final GroupChat? groupChat;
   @override
-  final NjangiGroupSettings groupSettings;
+  final NjangiGroupSettings? groupSettings;
   final List<NjangiGroupCircle> _groupCircles;
   @override
   @JsonKey()
@@ -477,13 +482,13 @@ abstract class _NjangiGroup implements NjangiGroup {
       final String? description,
       final DateTime? dateCreated,
       final List<String> groupAdmins,
-      final List<Map<String, dynamic>> groupMembers,
-      final List<Map<String, dynamic>> groupInvites,
-      final List<Map<String, dynamic>> groupRequests,
+      final List<String> groupMembers,
+      final List<String> groupInvites,
+      final List<String> groupRequests,
       final double currentAmount,
       final PaymentAccount? paymentAccount,
-      required final GroupChat groupChat,
-      required final NjangiGroupSettings groupSettings,
+      final GroupChat? groupChat,
+      final NjangiGroupSettings? groupSettings,
       final List<NjangiGroupCircle> groupCircles}) = _$NjangiGroupImpl;
 
   factory _NjangiGroup.fromJson(Map<String, dynamic> json) =
@@ -502,19 +507,19 @@ abstract class _NjangiGroup implements NjangiGroup {
   @override
   List<String> get groupAdmins;
   @override
-  List<Map<String, dynamic>> get groupMembers;
+  List<String> get groupMembers;
   @override
-  List<Map<String, dynamic>> get groupInvites;
+  List<String> get groupInvites;
   @override
-  List<Map<String, dynamic>> get groupRequests;
+  List<String> get groupRequests;
   @override
   double get currentAmount;
   @override
   PaymentAccount? get paymentAccount;
   @override
-  GroupChat get groupChat;
+  GroupChat? get groupChat;
   @override
-  NjangiGroupSettings get groupSettings;
+  NjangiGroupSettings? get groupSettings;
   @override
   List<NjangiGroupCircle> get groupCircles;
   @override

@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:njangi_hub/core/authentication/authentication.dart';
+import 'package:njangi_hub/core/njangi_group/njangi_groups.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
 class CreateGroupPage extends HookConsumerWidget {
@@ -13,10 +17,38 @@ class CreateGroupPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final groupMethodsNotifier = ref.watch(njangiGroupMethodsProvider.notifier);
+    final user = FirebaseAuth.instance.currentUser!;
     final groupImage = useState("");
     final groupName = useState("");
     final groupDescription = useState("");
+    final isLoading = useState(false);
 
+    Future<void> validate() async {
+      if(formKey.currentState!.validate()){
+        isLoading.value = true;
+        final group = NjangiGroup(
+            gid: FirebaseFirestore.instance.collection('njangi-groups').doc().id,
+            name: groupName.value,
+            description: groupDescription.value,
+            photo: groupImage.value,
+            groupAdmins: [user.uid],
+            groupMembers: [user.uid],
+            groupChat: GroupChat(),
+            groupSettings: NjangiGroupSettings(),
+            dateCreated: DateTime.now(),
+        );
+        try{
+        await groupMethodsNotifier.createGroup(group: group);
+        if(context.mounted){
+          print("User is: ${ref.watch(authNotifierProvider).user}");
+          Navigator.of(context).pushReplacementNamed(PageRoutes.njangiGroup);
+        }
+        } finally {
+          isLoading.value = false;
+        }
+      }
+    }
     return Scaffold(
       appBar: AppBar(title: const Text("Create New Group")),
       body: SingleChildScrollView(
@@ -27,6 +59,8 @@ class CreateGroupPage extends HookConsumerWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  if(isLoading.value)
+                    const LoadingWidget(),
                   Stack(
                     children: [
                       CircleAvatar(
@@ -94,10 +128,4 @@ class CreateGroupPage extends HookConsumerWidget {
       ),
     );
   }
-
-  Future<void> validate() async {
-    if(formKey.currentState!.validate()){
-
-  }
-}
 }

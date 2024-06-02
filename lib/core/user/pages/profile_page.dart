@@ -10,18 +10,31 @@ class ProfilePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authNotifierProvider).user!;
+    final auth = ref.watch(authNotifierProvider);
+    final user = auth.user!;
+    final authNotifier = ref.watch(authNotifierProvider.notifier);
     final authUser = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
         appBar: AppBar(
           title: const Text("Profile"),
-          actions: [IconButton(onPressed: (){}, icon: const Icon(Icons.logout), tooltip: "Logout",)],
+          actions: [
+            IconButton(
+              onPressed: () async {
+                await authNotifier.logout();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).pushNamed(PageRoutes.login);
+                },
+              icon: const Icon(Icons.logout),
+              tooltip: "Logout",
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
+              if (auth.isLoading) const LoadingWidget(),
               const Gap(15),
               Center(
                 child: Stack(
@@ -35,9 +48,9 @@ class ProfilePage extends HookConsumerWidget {
                           onTap: () => navigatorPush(
                               context: context,
                               nextPage: ImageViewer(
-                                  url: user.photo,
-                                  source: FileSource.cachedNetwork,
-                                  imageTag: TagNames.profilePhoto,
+                                url: user.photo,
+                                source: FileSource.cachedNetwork,
+                                imageTag: TagNames.profilePhoto,
                               )),
                         )),
                     Positioned(
@@ -76,13 +89,18 @@ class ProfilePage extends HookConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.email),
-                title: Text(user.email == null || user.email!.isEmpty ? "No email" : user.email!),
-                subtitle: user.email != null && user.email!.isNotEmpty ? Text(
-                  authUser.emailVerified ? "Verified" : "Not verified",
-                  style: TextStyle(
-                      color:
-                          authUser.emailVerified ? Colors.green : Colors.red),
-                ) : null,
+                title: Text(user.email == null || user.email!.isEmpty
+                    ? "No email"
+                    : user.email!),
+                subtitle: user.email != null && user.email!.isNotEmpty
+                    ? Text(
+                        authUser.emailVerified ? "Verified" : "Not verified",
+                        style: TextStyle(
+                            color: authUser.emailVerified
+                                ? Colors.green
+                                : Colors.red),
+                      )
+                    : null,
                 trailing: IconButton(
                   onPressed: _changeEmail,
                   icon: const Icon(Icons.edit),
@@ -91,18 +109,29 @@ class ProfilePage extends HookConsumerWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.calendar_month),
-                title: Text("Joined on ${authUser.metadata.creationTime?.toMonthDYrString()}"),
+                title: Text(
+                    "Joined on ${authUser.metadata.creationTime?.toMonthDYrString()}"),
               ),
               const Gap(10),
               user.aboutMe.isNotEmpty
                   ? Row(
-                  children: [
-                    const Expanded(child: Divider(),),
-                    Text('About Me', style: Theme.of(context).listTileTheme.titleTextStyle),
-                    const Expanded(child: Divider(),),
-                  ],
-                )
-                  : TextButton.icon(onPressed: (){}, icon: const Icon(Icons.edit), label: const Text('Add about me'),),
+                      children: [
+                        const Expanded(
+                          child: Divider(),
+                        ),
+                        Text('About Me',
+                            style:
+                                Theme.of(context).listTileTheme.titleTextStyle),
+                        const Expanded(
+                          child: Divider(),
+                        ),
+                      ],
+                    )
+                  : TextButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.edit),
+                      label: const Text('Add about me'),
+                    ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Text(user.aboutMe),

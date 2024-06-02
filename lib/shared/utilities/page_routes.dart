@@ -15,4 +15,5 @@ class PageRoutes {
   static const theme = '/theme';
   static const usersProfile = "/usersProfile";
   static const createGroup = '/createGroup';
+  static String njangiGroup = '/njangiGroup';
 }
