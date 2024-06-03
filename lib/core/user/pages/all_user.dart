@@ -16,12 +16,16 @@ class AllUsersPage extends StatefulHookConsumerWidget {
 
 class _AllUsersPageState extends ConsumerState<AllUsersPage> {
   late Stream<QuerySnapshot> _usersStream;
+  final firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
     final firebaseUser = firebase.FirebaseAuth.instance.currentUser;
-    final collectionRef = FirebaseFirestore.instance.collection("users");
+    firestore.settings = const Settings(
+        persistenceEnabled: true,
+        cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
+    final collectionRef = firestore.collection("users");
     _usersStream = firebaseUser != null
         ? collectionRef
             .where("uid", isNotEqualTo: firebaseUser.uid)
@@ -37,7 +41,7 @@ class _AllUsersPageState extends ConsumerState<AllUsersPage> {
       stream: _usersStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return err.ErrorWidget(
+          return err.DisplayErrorWidget(
             error: snapshot.error,
           );
         }
@@ -50,7 +54,7 @@ class _AllUsersPageState extends ConsumerState<AllUsersPage> {
               .map((doc) => User.fromJson(doc.data() as Map<String, dynamic>))
               .toList();
         }
-
+        print('USERS $users');
         return Skeletonizer(
           enabled: snapshot.connectionState == ConnectionState.waiting,
           child: ListView.builder(

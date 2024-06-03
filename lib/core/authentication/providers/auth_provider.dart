@@ -40,6 +40,10 @@ class AuthNotifier extends _$AuthNotifier {
     state = newState;
   }
 
+  void updateUser(auth.User newUser) {
+    state = state.copyWith(user: newUser);
+  }
+
   void dispose(){
     _authChangesListener.cancel();
   }
@@ -116,7 +120,7 @@ class AuthNotifier extends _$AuthNotifier {
               codeAutoRetrievalTimeout: (value) {})
           .catchError((error, stackTrace) {
         state = state.copyWith(
-            isLoading: false, error: error.toString().substring(0, 20));
+            isLoading: false, error: error.toString());
         toast(message: error.toString(), type: ToastificationType.error);
       });
     } else {
@@ -258,46 +262,6 @@ class AuthNotifier extends _$AuthNotifier {
     await docRef.update({"isOnline": isOnline});
     return;
   }
-
-  Future<void> addUsersToGroup({required GroupMemberStatus whichGroup, Map<String, dynamic> group = const {}}) async {
-    final user = state.user;
-    if(user == null){
-      return;
-    }
-    if(group.isEmpty){
-      return;
-    }
-
-    List x = [9, 8];
-    try {
-      switch(whichGroup){
-        case GroupMemberStatus.admin:
-        case GroupMemberStatus.member:
-          final docRef = _db.collection("users/${user.uid}/njangi-groups");
-          await docRef.add(group);
-          final newGroupIds = [...?(state.user?.groupsGIDs), group];
-          state = state.copyWith.user!.call(groupsGIDs: newGroupIds);
-          return;
-        case GroupMemberStatus.invite:
-          final docRef = _db.collection("users/${user.uid}/group-invites");
-          await docRef.add(group);
-          final newGroupIds = [...?(state.user?.groupsGIDs), group];
-          state = state.copyWith.user!.call(groupsGIDs: newGroupIds);
-          return;
-        case GroupMemberStatus.request:
-          final docRef = _db.collection("users/${user.uid}/group-requests");
-          await docRef.add(group);
-          final newGroupIds = [...?(state.user?.groupsGIDs), group];
-          state = state.copyWith.user!.call(groupsGIDs: newGroupIds);
-          return;
-        case GroupMemberStatus.none:
-            return;
-      }
-    } catch (e) {
-      toast(message: e.toString(), type: ToastificationType.error);
-    }
-    return;
-}
 
 Future<void> logout() async {
     try {

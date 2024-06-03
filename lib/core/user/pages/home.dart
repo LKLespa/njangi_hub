@@ -10,6 +10,7 @@ import 'package:njangi_hub/shared/shared.dart';
 class MyHomePage extends HookConsumerWidget {
   final List<Widget> _widgetOptions = const <Widget>[
     UsersNjangiGroups(),
+    SearchNjangiGroupsPage(),
     AllUsersPage(),
     ProfilePage(),
   ];
@@ -18,8 +19,7 @@ class MyHomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupX = NjangiGroup(gid: 'ksljd', name: "New Group", groupChat: GroupChat(), groupSettings: NjangiGroupSettings());
-
+  
     final selectedIndex = useState(0);
     final authState = ref.watch(authNotifierProvider);
     final user = authState.user;
@@ -51,10 +51,18 @@ class MyHomePage extends HookConsumerWidget {
       ),
       body: _widgetOptions[selectedIndex.value],
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        unselectedItemColor: Colors.grey.shade700,
+        unselectedLabelStyle: TextStyle(color: Colors.grey.shade700),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.groups_sharp),
             label: 'Groups',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chat),

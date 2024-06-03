@@ -3,8 +3,8 @@ import 'package:gap/gap.dart';
 
 // TODO: Add lottie animations
 
-class ErrorWidget extends StatelessWidget {
-  const ErrorWidget({super.key, this.error});
+class DisplayErrorWidget extends StatelessWidget {
+  const DisplayErrorWidget({super.key, this.error});
   final Object? error;
 
   @override

@@ -7,9 +7,10 @@ class UserImageAvatar extends StatelessWidget {
         this.url,
         this.onTap,
         this.radius = 25,
-        required this.imageSource});
+        required this.imageSource, this.fallbackUrl = Assets.imagesUser});
 
   final String? url;
+  final String fallbackUrl;
   final void Function()? onTap;
   final double radius;
   final FileSource imageSource;
@@ -17,7 +18,7 @@ class UserImageAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final imageProvider = getImageProviderFromSource(
-        path: url, source: imageSource, placeholder: Assets.imagesUser);
+        path: url, source: imageSource, placeholder: fallbackUrl);
     return Material(
       color: Colors.transparent,
       child: InkWell(

@@ -89,10 +89,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     internetConnectionListener = listenToInternetChanges();
-    internetConnectionListener.onData((data) {
-      final isConnected = data == InternetStatus.connected;
-      ref.read(authNotifierProvider.notifier).updateOnlineStatus(isOnline: isConnected);
-    });
+    // internetConnectionListener.onData((data) {
+    //   final isConnected = data == InternetStatus.connected;
+    //   ref.read(authNotifierProvider.notifier).updateOnlineStatus(isOnline: isConnected);
+    // });
     final authState = ref.read(authNotifierProvider);
     final authStateNotifier = ref.read(authNotifierProvider.notifier);
     Future.delayed(Duration.zero, () async {

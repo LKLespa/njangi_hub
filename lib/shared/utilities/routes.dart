@@ -16,5 +16,6 @@ final routes = {
   PageRoutes.theme: (context) => const ThemePage(),
   PageRoutes.usersProfile: (context) => const UserProfilePage(),
   PageRoutes.createGroup: (context) => CreateGroupPage(),
-  PageRoutes.njangiGroup: (context) => const NjangiGroupPage(),
+  PageRoutes.njangiGroup: (context) => NjangiGroupPage(),
+  PageRoutes.searchGroups: (context) => const SearchNjangiGroupsPage(),
 };
