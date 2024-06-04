@@ -13,6 +13,7 @@ part 'njangi_group_methods.g.dart';
 @Riverpod(keepAlive: false)
 class NjangiGroupMethods extends _$NjangiGroupMethods {
   final firebase.FirebaseAuth _auth = firebase.FirebaseAuth.instance;
+  final user = firebase.FirebaseAuth.instance.currentUser!;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   String? errorMessage;
@@ -103,9 +104,6 @@ class NjangiGroupMethods extends _$NjangiGroupMethods {
   }
 
   Future<void> requestToJoinGroup({required String groupId}) async {
-    final authNotifier = ref.watch(authNotifierProvider.notifier);
-    final user = ref.watch(authNotifierProvider).user;
-
     final isConnected = await checkInternetConnectivity(
         showIfConnected: false, showIfNotConnected: true);
     if (!isConnected || user == null || groupId.trim().isEmpty) {
@@ -118,31 +116,26 @@ class NjangiGroupMethods extends _$NjangiGroupMethods {
     };
 
     try {
-      final newRequestedGroupIds = [...(user.groupRequestsGIDs), data];
       final docRef =
           await _db.collection("users/${user.uid}/group-requests").add(data);
-      authNotifier.updateUser(
-          user.copyWith.call(groupRequestsGIDs: newRequestedGroupIds));
       _db.collection("njangi-groups").doc(groupId).update({
         "groupRequests": FieldValue.arrayUnion([user.uid])
       });
       toast(message: "Group Request Sent", type: ToastificationType.info);
+      print("User is $user");
     } catch (e) {
       toast(message: e.toString(), type: ToastificationType.error);
     }
   }
 
   Future<void> cancelRequestToJoinGroup({required String groupId}) async {
-    final authNotifier = ref.watch(authNotifierProvider.notifier);
-    final user = ref.watch(authNotifierProvider).user;
-
     final isConnected = await checkInternetConnectivity(
         showIfConnected: false, showIfNotConnected: true);
     if (!isConnected) {
       return;
     }
 
-    if (user == null || groupId.trim().isEmpty) {
+    if (groupId.trim().isEmpty) {
       toast(message: "An Error Occured", type: ToastificationType.error);
       return;
     }
@@ -158,19 +151,6 @@ class NjangiGroupMethods extends _$NjangiGroupMethods {
         final docRef =
         _db.collection("users/${user.uid}/group-requests").doc(requestId);
         docRef.delete();
-      }
-
-      bool hasElement = user.groupRequestsGIDs
-          .any((request) => request['groupId'] == groupId);
-      if (hasElement) {
-        List<Map<String, dynamic>> newRequestedGroupIds = [];
-        for (final request in user.groupRequestsGIDs){
-          if(request['groupId']!= groupId){
-            newRequestedGroupIds.add(request);
-          }
-        }
-        authNotifier.updateUser(
-            user.copyWith.call(groupRequestsGIDs: newRequestedGroupIds));
       }
       _db.collection("njangi-groups").doc(groupId).update({
         "groupRequests": FieldValue.arrayRemove([user.uid])

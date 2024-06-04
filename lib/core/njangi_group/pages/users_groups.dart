@@ -37,92 +37,88 @@ class _UsersNjangiGroupsState extends ConsumerState<UsersNjangiGroups> {
         .snapshots());
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: usersNjangiGroupsStream.value,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return err.DisplayErrorWidget(
-                      error: snapshot.error,
-                    );
-                  }
-
-                  List<NjangiGroup> groups = [];
-                  if (snapshot.hasData) {
-                    groups = snapshot.data!.docs
-                        .map((doc) => NjangiGroup.fromJson(
-                            doc.data() as Map<String, dynamic>))
-                        .toList();
-                    itemCount = groups.length;
-                  }
-
-                  if (snapshot.hasData && groups.isEmpty) {
-                    String text = 'Search Groups';
-                    switch (groupFilter.value) {
-                      case GroupMemberStatus.member:
-                      case GroupMemberStatus.admin:
-                        text = "No Groups";
-                        break;
-                      case GroupMemberStatus.invite:
-                        text = "No Group Invites";
-                        break;
-                      case GroupMemberStatus.request:
-                        text = "No Group Request";
-                        break;
-                      case GroupMemberStatus.none:
-                        break;
-                    }
-                    return Center(child: Text(text));
-                  }
-
-                  return Skeletonizer(
-                    enabled:
-                        snapshot.connectionState == ConnectionState.waiting,
-                    child: ListView.builder(
-                      itemCount: itemCount,
-                      itemBuilder: (context, index) {
-                        final group = groups[index];
-                        // final membersCount = group.groupMembers.length;
-                        return ListTile(
-                          title: Text(group.name),
-                          dense: true,
-                          subtitle: Text(
-                            "${group.description}",
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          // trailing: Text(
-                          //   "$membersCount\nmember${membersCount == 1 ? "" : "s"}",
-                          //   textAlign: TextAlign.center,
-                          // ),
-                          leading: Hero(
-                            tag: group.gid,
-                            child: UserImageAvatar(
-                              imageSource: FileSource.cachedNetwork,
-                              url: group.photo,
-                            ),
-                          ),
-                          onTap: () {
-                            if(group.groupMembers.contains(firebaseUser?.uid)){
-                              Navigator.pushNamed(context, PageRoutes.njangiGroup, arguments: group);
-                              return;
-                            }
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (_) => JoinGroup(groupId: group.gid));},
-                        );
-                      },
-                    ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: usersNjangiGroupsStream.value,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return err.DisplayErrorWidget(
+                    error: snapshot.error,
                   );
-                },
-              ),
+                }
+
+                List<NjangiGroup> groups = [];
+                if (snapshot.hasData) {
+                  groups = snapshot.data!.docs
+                      .map((doc) => NjangiGroup.fromJson(
+                          doc.data() as Map<String, dynamic>))
+                      .toList();
+                  itemCount = groups.length;
+                }
+
+                if (snapshot.hasData && groups.isEmpty) {
+                  String text = 'Search Groups';
+                  switch (groupFilter.value) {
+                    case GroupMemberStatus.member:
+                    case GroupMemberStatus.admin:
+                      text = "No Groups";
+                      break;
+                    case GroupMemberStatus.invite:
+                      text = "No Group Invites";
+                      break;
+                    case GroupMemberStatus.request:
+                      text = "No Group Request";
+                      break;
+                    case GroupMemberStatus.none:
+                      break;
+                  }
+                  return Center(child: Text(text));
+                }
+
+                return Skeletonizer(
+                  enabled:
+                      snapshot.connectionState == ConnectionState.waiting,
+                  child: ListView.builder(
+                    itemCount: itemCount,
+                    itemBuilder: (context, index) {
+                      final group = groups[index];
+                      // final membersCount = group.groupMembers.length;
+                      return ListTile(
+                        title: Text(group.name),
+                        subtitle: Text(
+                          "${group.description}",
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        // trailing: Text(
+                        //   "$membersCount\nmember${membersCount == 1 ? "" : "s"}",
+                        //   textAlign: TextAlign.center,
+                        // ),
+                        leading: Hero(
+                          tag: group.gid,
+                          child: UserImageAvatar(
+                            imageSource: FileSource.cachedNetwork,
+                            url: group.photo,
+                          ),
+                        ),
+                        onTap: () {
+                          if(group.groupMembers.contains(firebaseUser?.uid)){
+                            Navigator.pushNamed(context, PageRoutes.njangiGroup, arguments: group);
+                            return;
+                          }
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (_) => JoinGroup(groupId: group.gid));},
+                      );
+                    },
+                  ),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomSheet: BottomSheet(
         onClosing: () {},

@@ -5,6 +5,7 @@ export './widgets/error_widget.dart';
 export './widgets/loading_widget.dart';
 export './widgets/view_image_wiget.dart';
 export './widgets/user_profile_avatar.dart';
+export './widgets/ink_well_icon_button.dart';
 
 export './pages/intro.dart';
 export './pages/splash_screen.dart';
