@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 enum AttachmentType {
+  text('text'),
   image('image'),
   video('video'),
   audio('audio'),
@@ -17,12 +18,4 @@ enum AttachmentType {
     orElse: () => AttachmentType.document,
   );
   }
-}
-
-void main() {
-  final attachment = AttachmentType.audio;
-
-  print("Attachment is $attachment");
-  print("Attachment toJson is ${attachment.toJson()}");
-  print("Attachment toJson is ${AttachmentType.fromJson('value')}");
 }

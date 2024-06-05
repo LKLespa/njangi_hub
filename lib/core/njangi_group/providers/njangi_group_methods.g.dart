@@ -7,7 +7,7 @@ part of 'njangi_group_methods.dart';
 // **************************************************************************
 
 String _$njangiGroupMethodsHash() =>
-    r'6df04ec0ff15f03cb0dee197cef75618db4523bd';
+    r'd064c8639755de91b30bf8b45de8a08b607029ea';
 
 /// See also [NjangiGroupMethods].
 @ProviderFor(NjangiGroupMethods)

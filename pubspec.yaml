@@ -41,7 +41,7 @@ dependencies:
   google_fonts: ^6.2.1
   # hive: ^2.2.3
   pinput: ^4.0.0
-  # uuid: ^4.4.0
+  uuid: ^4.4.0
   adaptive_theme: ^3.6.0
   firebase_core: ^2.31.1
   firebase_auth: ^4.19.6
