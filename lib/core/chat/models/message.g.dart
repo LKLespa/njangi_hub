@@ -12,7 +12,7 @@ _$MessageImpl _$$MessageImplFromJson(Map<String, dynamic> json) =>
       senderId: json['senderId'] as String,
       chatId: json['chatId'] as String?,
       groupId: json['groupId'] as String?,
-      content: json['content'],
+      text: json['text'] as String?,
       timestamp: DateTime.parse(json['timestamp'] as String),
       messageType:
           $enumDecodeNullable(_$AttachmentTypeEnumMap, json['messageType']) ??
@@ -29,7 +29,10 @@ _$MessageImpl _$$MessageImplFromJson(Map<String, dynamic> json) =>
       repliedToMessageId: json['repliedToMessageId'] as String?,
       repliedToMessage: json['repliedToMessage'] == null
           ? null
-          : Message.fromJson(json['repliedToMessage'] as Map<String, dynamic>),
+          : SimpleMessage.fromJson(
+              json['repliedToMessage'] as Map<String, dynamic>),
+      url: json['url'] as String?,
+      isSent: json['isSent'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$MessageImplToJson(_$MessageImpl instance) =>
@@ -38,7 +41,7 @@ Map<String, dynamic> _$$MessageImplToJson(_$MessageImpl instance) =>
       'senderId': instance.senderId,
       'chatId': instance.chatId,
       'groupId': instance.groupId,
-      'content': instance.content,
+      'text': instance.text,
       'timestamp': instance.timestamp.toIso8601String(),
       'messageType': instance.messageType,
       'attachments': instance.attachments,
@@ -46,6 +49,8 @@ Map<String, dynamic> _$$MessageImplToJson(_$MessageImpl instance) =>
       'readBy': instance.readBy,
       'repliedToMessageId': instance.repliedToMessageId,
       'repliedToMessage': instance.repliedToMessage,
+      'url': instance.url,
+      'isSent': instance.isSent,
     };
 
 const _$AttachmentTypeEnumMap = {

@@ -24,6 +24,8 @@ mixin _$Chat {
   bool get isGroup => throw _privateConstructorUsedError;
   bool get isNjangiGroup => throw _privateConstructorUsedError;
   List<Message> get messages => throw _privateConstructorUsedError;
+  List<Message> get sendingMessages => throw _privateConstructorUsedError;
+  bool get isSending => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -39,7 +41,9 @@ abstract class $ChatCopyWith<$Res> {
       {String chatId,
       bool isGroup,
       bool isNjangiGroup,
-      List<Message> messages});
+      List<Message> messages,
+      List<Message> sendingMessages,
+      bool isSending});
 }
 
 /// @nodoc
@@ -59,6 +63,8 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
     Object? isGroup = null,
     Object? isNjangiGroup = null,
     Object? messages = null,
+    Object? sendingMessages = null,
+    Object? isSending = null,
   }) {
     return _then(_value.copyWith(
       chatId: null == chatId
@@ -77,6 +83,14 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<Message>,
+      sendingMessages: null == sendingMessages
+          ? _value.sendingMessages
+          : sendingMessages // ignore: cast_nullable_to_non_nullable
+              as List<Message>,
+      isSending: null == isSending
+          ? _value.isSending
+          : isSending // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -92,7 +106,9 @@ abstract class _$$ChatImplCopyWith<$Res> implements $ChatCopyWith<$Res> {
       {String chatId,
       bool isGroup,
       bool isNjangiGroup,
-      List<Message> messages});
+      List<Message> messages,
+      List<Message> sendingMessages,
+      bool isSending});
 }
 
 /// @nodoc
@@ -109,6 +125,8 @@ class __$$ChatImplCopyWithImpl<$Res>
     Object? isGroup = null,
     Object? isNjangiGroup = null,
     Object? messages = null,
+    Object? sendingMessages = null,
+    Object? isSending = null,
   }) {
     return _then(_$ChatImpl(
       chatId: null == chatId
@@ -127,6 +145,14 @@ class __$$ChatImplCopyWithImpl<$Res>
           ? _value._messages
           : messages // ignore: cast_nullable_to_non_nullable
               as List<Message>,
+      sendingMessages: null == sendingMessages
+          ? _value._sendingMessages
+          : sendingMessages // ignore: cast_nullable_to_non_nullable
+              as List<Message>,
+      isSending: null == isSending
+          ? _value.isSending
+          : isSending // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -138,8 +164,11 @@ class _$ChatImpl extends _Chat {
       {required this.chatId,
       required this.isGroup,
       required this.isNjangiGroup,
-      final List<Message> messages = const []})
+      final List<Message> messages = const [],
+      final List<Message> sendingMessages = const [],
+      this.isSending = false})
       : _messages = messages,
+        _sendingMessages = sendingMessages,
         super._();
 
   factory _$ChatImpl.fromJson(Map<String, dynamic> json) =>
@@ -160,9 +189,22 @@ class _$ChatImpl extends _Chat {
     return EqualUnmodifiableListView(_messages);
   }
 
+  final List<Message> _sendingMessages;
+  @override
+  @JsonKey()
+  List<Message> get sendingMessages {
+    if (_sendingMessages is EqualUnmodifiableListView) return _sendingMessages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sendingMessages);
+  }
+
+  @override
+  @JsonKey()
+  final bool isSending;
+
   @override
   String toString() {
-    return 'Chat(chatId: $chatId, isGroup: $isGroup, isNjangiGroup: $isNjangiGroup, messages: $messages)';
+    return 'Chat(chatId: $chatId, isGroup: $isGroup, isNjangiGroup: $isNjangiGroup, messages: $messages, sendingMessages: $sendingMessages, isSending: $isSending)';
   }
 
   @override
@@ -174,13 +216,23 @@ class _$ChatImpl extends _Chat {
             (identical(other.isGroup, isGroup) || other.isGroup == isGroup) &&
             (identical(other.isNjangiGroup, isNjangiGroup) ||
                 other.isNjangiGroup == isNjangiGroup) &&
-            const DeepCollectionEquality().equals(other._messages, _messages));
+            const DeepCollectionEquality().equals(other._messages, _messages) &&
+            const DeepCollectionEquality()
+                .equals(other._sendingMessages, _sendingMessages) &&
+            (identical(other.isSending, isSending) ||
+                other.isSending == isSending));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, chatId, isGroup, isNjangiGroup,
-      const DeepCollectionEquality().hash(_messages));
+  int get hashCode => Object.hash(
+      runtimeType,
+      chatId,
+      isGroup,
+      isNjangiGroup,
+      const DeepCollectionEquality().hash(_messages),
+      const DeepCollectionEquality().hash(_sendingMessages),
+      isSending);
 
   @JsonKey(ignore: true)
   @override
@@ -201,7 +253,9 @@ abstract class _Chat extends Chat {
       {required final String chatId,
       required final bool isGroup,
       required final bool isNjangiGroup,
-      final List<Message> messages}) = _$ChatImpl;
+      final List<Message> messages,
+      final List<Message> sendingMessages,
+      final bool isSending}) = _$ChatImpl;
   _Chat._() : super._();
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$ChatImpl.fromJson;
@@ -214,6 +268,10 @@ abstract class _Chat extends Chat {
   bool get isNjangiGroup;
   @override
   List<Message> get messages;
+  @override
+  List<Message> get sendingMessages;
+  @override
+  bool get isSending;
   @override
   @JsonKey(ignore: true)
   _$$ChatImplCopyWith<_$ChatImpl> get copyWith =>

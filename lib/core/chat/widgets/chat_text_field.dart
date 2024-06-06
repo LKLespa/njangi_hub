@@ -1,30 +1,43 @@
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:njangi_hub/core/chat/chat.dart';
 import 'package:njangi_hub/shared/shared.dart';
 
-class ChatTextField extends HookWidget {
+class ChatTextField extends ConsumerStatefulWidget {
   const ChatTextField({
+    required this.chat,
     super.key,
-    required this.chatId,
-    required this.onSendMessage,
-    this.onSendAttachment,
   });
-  final String chatId;
-  final Function(String message) onSendMessage;
-  final Function(File attachment)? onSendAttachment;
+
+  final Chat chat;
+
+  @override
+  ConsumerState<ChatTextField> createState() => _ChatTextFieldState();
+}
+
+class _ChatTextFieldState extends ConsumerState<ChatTextField> {
+  late TextEditingController _textEditingController;
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController = TextEditingController();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    void sendMessage() {}
-
     void showAttachmentModal() {
       showModalBottomSheet(
           context: context,
-
           builder: (_) {
             return const AttachmentModal();
           });
@@ -41,9 +54,11 @@ class ChatTextField extends HookWidget {
               child: TextField(
                 maxLines: 5,
                 minLines: 1,
+                controller: _textEditingController,
+                focusNode: _focusNode,
                 onChanged: (value) {},
                 textInputAction: TextInputAction.send,
-                onEditingComplete: sendMessage,
+                onEditingComplete: () {},
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -64,11 +79,27 @@ class ChatTextField extends HookWidget {
               ),
             ),
           ),
-          true
-              ? InkWellIconButton(onPressed: sendMessage, icon: Icons.send)
-              : InkWellIconButton(onPressed: () {}, icon: Icons.mic),
+          InkWellIconButton(
+              onPressed: () async {
+                await sendMessage(
+                    text: _textEditingController.text,
+                    messageType: AttachmentType.text);
+              },
+              icon: Icons.send)
+          // InkWellIconButton(onPressed: () {}, icon: Icons.mic),
         ],
       ),
     );
+  }
+
+  Future<void> sendMessage(
+      {required dynamic text, required AttachmentType messageType}) async {
+    print('Sending message');
+    final chatProvider = ref.read(chatMethodsProvider(widget.chat).notifier);
+    await chatProvider.sendMessageToFirestore(
+        groupId: widget.chat.chatId,
+        text: text,
+        messageType: messageType,);
+    _textEditingController.clear();
   }
 }

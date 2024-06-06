@@ -20,10 +20,9 @@ class NjangiGroupPage extends HookConsumerWidget {
     NjangiGroup group =
         ModalRoute.of(context)?.settings.arguments as NjangiGroup;
     bool isLoading = true;
-    final Stream<DocumentSnapshot<Map<String, dynamic>>> groupStream =
-        firestore.collection("njangi-groups").doc(group.gid).snapshots();
-
-    final ValueNotifier<List<String>> messages = useState(['Hi There, name is already']);
+    final groupRef = firestore.collection("njangi-groups").doc(group.gid);
+    final Stream<DocumentSnapshot<Map<String, dynamic>>> groupStream = groupRef.snapshots();
+    List<Message> messages = [];
 
     return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
         stream: groupStream,
@@ -71,7 +70,7 @@ class NjangiGroupPage extends HookConsumerWidget {
                     IconButton(onPressed: (){}, icon: const Icon(Icons.more_vert)),
                   ],
                 ),
-                body: const ChatScreen(),
+                body: ChatScreen(chatId: group.gid, isGroup: true, isNjangiGroup: true,),
             ),
           );
         });

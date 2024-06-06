@@ -6,7 +6,7 @@ part of 'chat_methods.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$chatMethodsHash() => r'9973ca87447118df8e8be085951c15ed25f34351';
+String _$chatMethodsHash() => r'61bebac1fb18daf84d8d579b660d1fd96a8a5b55';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,17 +30,11 @@ class _SystemHash {
 }
 
 abstract class _$ChatMethods extends BuildlessAutoDisposeNotifier<Chat> {
-  late final dynamic chatId;
-  late final bool isGroup;
-  late final bool isNjangiGroup;
-  late final List<Message> messages;
+  late final Chat chat;
 
-  Chat build({
-    required dynamic chatId,
-    required bool isGroup,
-    required bool isNjangiGroup,
-    List<Message> messages = const [],
-  });
+  Chat build(
+    Chat chat,
+  );
 }
 
 /// See also [ChatMethods].
@@ -53,17 +47,11 @@ class ChatMethodsFamily extends Family<Chat> {
   const ChatMethodsFamily();
 
   /// See also [ChatMethods].
-  ChatMethodsProvider call({
-    required dynamic chatId,
-    required bool isGroup,
-    required bool isNjangiGroup,
-    List<Message> messages = const [],
-  }) {
+  ChatMethodsProvider call(
+    Chat chat,
+  ) {
     return ChatMethodsProvider(
-      chatId: chatId,
-      isGroup: isGroup,
-      isNjangiGroup: isNjangiGroup,
-      messages: messages,
+      chat,
     );
   }
 
@@ -72,10 +60,7 @@ class ChatMethodsFamily extends Family<Chat> {
     covariant ChatMethodsProvider provider,
   ) {
     return call(
-      chatId: provider.chatId,
-      isGroup: provider.isGroup,
-      isNjangiGroup: provider.isNjangiGroup,
-      messages: provider.messages,
+      provider.chat,
     );
   }
 
@@ -98,17 +83,10 @@ class ChatMethodsFamily extends Family<Chat> {
 class ChatMethodsProvider
     extends AutoDisposeNotifierProviderImpl<ChatMethods, Chat> {
   /// See also [ChatMethods].
-  ChatMethodsProvider({
-    required dynamic chatId,
-    required bool isGroup,
-    required bool isNjangiGroup,
-    List<Message> messages = const [],
-  }) : this._internal(
-          () => ChatMethods()
-            ..chatId = chatId
-            ..isGroup = isGroup
-            ..isNjangiGroup = isNjangiGroup
-            ..messages = messages,
+  ChatMethodsProvider(
+    Chat chat,
+  ) : this._internal(
+          () => ChatMethods()..chat = chat,
           from: chatMethodsProvider,
           name: r'chatMethodsProvider',
           debugGetCreateSourceHash:
@@ -118,10 +96,7 @@ class ChatMethodsProvider
           dependencies: ChatMethodsFamily._dependencies,
           allTransitiveDependencies:
               ChatMethodsFamily._allTransitiveDependencies,
-          chatId: chatId,
-          isGroup: isGroup,
-          isNjangiGroup: isNjangiGroup,
-          messages: messages,
+          chat: chat,
         );
 
   ChatMethodsProvider._internal(
@@ -131,26 +106,17 @@ class ChatMethodsProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.chatId,
-    required this.isGroup,
-    required this.isNjangiGroup,
-    required this.messages,
+    required this.chat,
   }) : super.internal();
 
-  final dynamic chatId;
-  final bool isGroup;
-  final bool isNjangiGroup;
-  final List<Message> messages;
+  final Chat chat;
 
   @override
   Chat runNotifierBuild(
     covariant ChatMethods notifier,
   ) {
     return notifier.build(
-      chatId: chatId,
-      isGroup: isGroup,
-      isNjangiGroup: isNjangiGroup,
-      messages: messages,
+      chat,
     );
   }
 
@@ -159,20 +125,13 @@ class ChatMethodsProvider
     return ProviderOverride(
       origin: this,
       override: ChatMethodsProvider._internal(
-        () => create()
-          ..chatId = chatId
-          ..isGroup = isGroup
-          ..isNjangiGroup = isNjangiGroup
-          ..messages = messages,
+        () => create()..chat = chat,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        chatId: chatId,
-        isGroup: isGroup,
-        isNjangiGroup: isNjangiGroup,
-        messages: messages,
+        chat: chat,
       ),
     );
   }
@@ -184,37 +143,21 @@ class ChatMethodsProvider
 
   @override
   bool operator ==(Object other) {
-    return other is ChatMethodsProvider &&
-        other.chatId == chatId &&
-        other.isGroup == isGroup &&
-        other.isNjangiGroup == isNjangiGroup &&
-        other.messages == messages;
+    return other is ChatMethodsProvider && other.chat == chat;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, chatId.hashCode);
-    hash = _SystemHash.combine(hash, isGroup.hashCode);
-    hash = _SystemHash.combine(hash, isNjangiGroup.hashCode);
-    hash = _SystemHash.combine(hash, messages.hashCode);
+    hash = _SystemHash.combine(hash, chat.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin ChatMethodsRef on AutoDisposeNotifierProviderRef<Chat> {
-  /// The parameter `chatId` of this provider.
-  dynamic get chatId;
-
-  /// The parameter `isGroup` of this provider.
-  bool get isGroup;
-
-  /// The parameter `isNjangiGroup` of this provider.
-  bool get isNjangiGroup;
-
-  /// The parameter `messages` of this provider.
-  List<Message> get messages;
+  /// The parameter `chat` of this provider.
+  Chat get chat;
 }
 
 class _ChatMethodsProviderElement
@@ -223,13 +166,7 @@ class _ChatMethodsProviderElement
   _ChatMethodsProviderElement(super.provider);
 
   @override
-  dynamic get chatId => (origin as ChatMethodsProvider).chatId;
-  @override
-  bool get isGroup => (origin as ChatMethodsProvider).isGroup;
-  @override
-  bool get isNjangiGroup => (origin as ChatMethodsProvider).isNjangiGroup;
-  @override
-  List<Message> get messages => (origin as ChatMethodsProvider).messages;
+  Chat get chat => (origin as ChatMethodsProvider).chat;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

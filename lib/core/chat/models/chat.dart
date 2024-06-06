@@ -12,6 +12,8 @@ class Chat with _$Chat {
     required bool isGroup,
     required bool isNjangiGroup,
     @Default([]) List<Message> messages,
+    @Default([]) List<Message> sendingMessages,
+    @Default(false) bool isSending,
 }) = _Chat;
 
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);

@@ -24,14 +24,16 @@ mixin _$Message {
   String get senderId => throw _privateConstructorUsedError;
   String? get chatId => throw _privateConstructorUsedError;
   String? get groupId => throw _privateConstructorUsedError;
-  dynamic get content => throw _privateConstructorUsedError;
+  String? get text => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
   AttachmentType get messageType => throw _privateConstructorUsedError;
   List<Attachment> get attachments => throw _privateConstructorUsedError;
   bool get readByEveryone => throw _privateConstructorUsedError;
   List<String> get readBy => throw _privateConstructorUsedError;
   String? get repliedToMessageId => throw _privateConstructorUsedError;
-  Message? get repliedToMessage => throw _privateConstructorUsedError;
+  SimpleMessage? get repliedToMessage => throw _privateConstructorUsedError;
+  String? get url => throw _privateConstructorUsedError;
+  bool get isSent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -48,16 +50,18 @@ abstract class $MessageCopyWith<$Res> {
       String senderId,
       String? chatId,
       String? groupId,
-      dynamic content,
+      String? text,
       DateTime timestamp,
       AttachmentType messageType,
       List<Attachment> attachments,
       bool readByEveryone,
       List<String> readBy,
       String? repliedToMessageId,
-      Message? repliedToMessage});
+      SimpleMessage? repliedToMessage,
+      String? url,
+      bool isSent});
 
-  $MessageCopyWith<$Res>? get repliedToMessage;
+  $SimpleMessageCopyWith<$Res>? get repliedToMessage;
 }
 
 /// @nodoc
@@ -77,7 +81,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? senderId = null,
     Object? chatId = freezed,
     Object? groupId = freezed,
-    Object? content = freezed,
+    Object? text = freezed,
     Object? timestamp = null,
     Object? messageType = null,
     Object? attachments = null,
@@ -85,6 +89,8 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? readBy = null,
     Object? repliedToMessageId = freezed,
     Object? repliedToMessage = freezed,
+    Object? url = freezed,
+    Object? isSent = null,
   }) {
     return _then(_value.copyWith(
       mid: null == mid
@@ -103,10 +109,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.groupId
           : groupId // ignore: cast_nullable_to_non_nullable
               as String?,
-      content: freezed == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+      text: freezed == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -134,18 +140,26 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
       repliedToMessage: freezed == repliedToMessage
           ? _value.repliedToMessage
           : repliedToMessage // ignore: cast_nullable_to_non_nullable
-              as Message?,
+              as SimpleMessage?,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isSent: null == isSent
+          ? _value.isSent
+          : isSent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
   @override
   @pragma('vm:prefer-inline')
-  $MessageCopyWith<$Res>? get repliedToMessage {
+  $SimpleMessageCopyWith<$Res>? get repliedToMessage {
     if (_value.repliedToMessage == null) {
       return null;
     }
 
-    return $MessageCopyWith<$Res>(_value.repliedToMessage!, (value) {
+    return $SimpleMessageCopyWith<$Res>(_value.repliedToMessage!, (value) {
       return _then(_value.copyWith(repliedToMessage: value) as $Val);
     });
   }
@@ -163,17 +177,19 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       String senderId,
       String? chatId,
       String? groupId,
-      dynamic content,
+      String? text,
       DateTime timestamp,
       AttachmentType messageType,
       List<Attachment> attachments,
       bool readByEveryone,
       List<String> readBy,
       String? repliedToMessageId,
-      Message? repliedToMessage});
+      SimpleMessage? repliedToMessage,
+      String? url,
+      bool isSent});
 
   @override
-  $MessageCopyWith<$Res>? get repliedToMessage;
+  $SimpleMessageCopyWith<$Res>? get repliedToMessage;
 }
 
 /// @nodoc
@@ -191,7 +207,7 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? senderId = null,
     Object? chatId = freezed,
     Object? groupId = freezed,
-    Object? content = freezed,
+    Object? text = freezed,
     Object? timestamp = null,
     Object? messageType = null,
     Object? attachments = null,
@@ -199,6 +215,8 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? readBy = null,
     Object? repliedToMessageId = freezed,
     Object? repliedToMessage = freezed,
+    Object? url = freezed,
+    Object? isSent = null,
   }) {
     return _then(_$MessageImpl(
       mid: null == mid
@@ -217,10 +235,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.groupId
           : groupId // ignore: cast_nullable_to_non_nullable
               as String?,
-      content: freezed == content
-          ? _value.content
-          : content // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+      text: freezed == text
+          ? _value.text
+          : text // ignore: cast_nullable_to_non_nullable
+              as String?,
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
@@ -248,7 +266,15 @@ class __$$MessageImplCopyWithImpl<$Res>
       repliedToMessage: freezed == repliedToMessage
           ? _value.repliedToMessage
           : repliedToMessage // ignore: cast_nullable_to_non_nullable
-              as Message?,
+              as SimpleMessage?,
+      url: freezed == url
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isSent: null == isSent
+          ? _value.isSent
+          : isSent // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -261,14 +287,16 @@ class _$MessageImpl extends _Message {
       required this.senderId,
       this.chatId,
       this.groupId,
-      required this.content,
+      this.text,
       required this.timestamp,
       this.messageType = AttachmentType.text,
       final List<Attachment> attachments = const [],
       this.readByEveryone = false,
       final List<String> readBy = const [],
       this.repliedToMessageId,
-      this.repliedToMessage})
+      this.repliedToMessage,
+      this.url,
+      this.isSent = false})
       : _attachments = attachments,
         _readBy = readBy,
         super._();
@@ -285,7 +313,7 @@ class _$MessageImpl extends _Message {
   @override
   final String? groupId;
   @override
-  final dynamic content;
+  final String? text;
   @override
   final DateTime timestamp;
   @override
@@ -315,11 +343,16 @@ class _$MessageImpl extends _Message {
   @override
   final String? repliedToMessageId;
   @override
-  final Message? repliedToMessage;
+  final SimpleMessage? repliedToMessage;
+  @override
+  final String? url;
+  @override
+  @JsonKey()
+  final bool isSent;
 
   @override
   String toString() {
-    return 'Message(mid: $mid, senderId: $senderId, chatId: $chatId, groupId: $groupId, content: $content, timestamp: $timestamp, messageType: $messageType, attachments: $attachments, readByEveryone: $readByEveryone, readBy: $readBy, repliedToMessageId: $repliedToMessageId, repliedToMessage: $repliedToMessage)';
+    return 'Message(mid: $mid, senderId: $senderId, chatId: $chatId, groupId: $groupId, text: $text, timestamp: $timestamp, messageType: $messageType, attachments: $attachments, readByEveryone: $readByEveryone, readBy: $readBy, repliedToMessageId: $repliedToMessageId, repliedToMessage: $repliedToMessage, url: $url, isSent: $isSent)';
   }
 
   @override
@@ -332,7 +365,7 @@ class _$MessageImpl extends _Message {
                 other.senderId == senderId) &&
             (identical(other.chatId, chatId) || other.chatId == chatId) &&
             (identical(other.groupId, groupId) || other.groupId == groupId) &&
-            const DeepCollectionEquality().equals(other.content, content) &&
+            (identical(other.text, text) || other.text == text) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
             (identical(other.messageType, messageType) ||
@@ -345,7 +378,9 @@ class _$MessageImpl extends _Message {
             (identical(other.repliedToMessageId, repliedToMessageId) ||
                 other.repliedToMessageId == repliedToMessageId) &&
             (identical(other.repliedToMessage, repliedToMessage) ||
-                other.repliedToMessage == repliedToMessage));
+                other.repliedToMessage == repliedToMessage) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.isSent, isSent) || other.isSent == isSent));
   }
 
   @JsonKey(ignore: true)
@@ -356,14 +391,16 @@ class _$MessageImpl extends _Message {
       senderId,
       chatId,
       groupId,
-      const DeepCollectionEquality().hash(content),
+      text,
       timestamp,
       messageType,
       const DeepCollectionEquality().hash(_attachments),
       readByEveryone,
       const DeepCollectionEquality().hash(_readBy),
       repliedToMessageId,
-      repliedToMessage);
+      repliedToMessage,
+      url,
+      isSent);
 
   @JsonKey(ignore: true)
   @override
@@ -385,14 +422,16 @@ abstract class _Message extends Message {
       required final String senderId,
       final String? chatId,
       final String? groupId,
-      required final dynamic content,
+      final String? text,
       required final DateTime timestamp,
       final AttachmentType messageType,
       final List<Attachment> attachments,
       final bool readByEveryone,
       final List<String> readBy,
       final String? repliedToMessageId,
-      final Message? repliedToMessage}) = _$MessageImpl;
+      final SimpleMessage? repliedToMessage,
+      final String? url,
+      final bool isSent}) = _$MessageImpl;
   _Message._() : super._();
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$MessageImpl.fromJson;
@@ -406,7 +445,7 @@ abstract class _Message extends Message {
   @override
   String? get groupId;
   @override
-  dynamic get content;
+  String? get text;
   @override
   DateTime get timestamp;
   @override
@@ -420,7 +459,11 @@ abstract class _Message extends Message {
   @override
   String? get repliedToMessageId;
   @override
-  Message? get repliedToMessage;
+  SimpleMessage? get repliedToMessage;
+  @override
+  String? get url;
+  @override
+  bool get isSent;
   @override
   @JsonKey(ignore: true)
   _$$MessageImplCopyWith<_$MessageImpl> get copyWith =>

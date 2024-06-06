@@ -14,6 +14,11 @@ _$ChatImpl _$$ChatImplFromJson(Map<String, dynamic> json) => _$ChatImpl(
               ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      sendingMessages: (json['sendingMessages'] as List<dynamic>?)
+              ?.map((e) => Message.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      isSending: json['isSending'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$ChatImplToJson(_$ChatImpl instance) =>
@@ -22,4 +27,6 @@ Map<String, dynamic> _$$ChatImplToJson(_$ChatImpl instance) =>
       'isGroup': instance.isGroup,
       'isNjangiGroup': instance.isNjangiGroup,
       'messages': instance.messages,
+      'sendingMessages': instance.sendingMessages,
+      'isSending': instance.isSending,
     };
